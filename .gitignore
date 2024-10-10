@@ -1,6 +1,8 @@
 bin/
 obj/
 .vs/
+packages/
+*.bak
 *.suo
-*.v2
-*.json
+*.user
+out/
