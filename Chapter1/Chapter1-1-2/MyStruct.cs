@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chapter1_1_2 {
+﻿namespace Chapter1_1_2 {
+    /// <summary>
+    /// 構造体
+    /// </summary>
     internal struct MyStruct {
+        /// <summary>
+        /// Xプロパティ（構造体）
+        /// </summary>
         public int X { get; set; }
+
+        /// <summary>
+        /// Yプロパティ（構造体）
+        /// </summary>
         public int Y { get; set; }
     }
 }
