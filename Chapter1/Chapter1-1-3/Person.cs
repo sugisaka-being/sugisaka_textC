@@ -21,8 +21,8 @@ namespace Chapter1_1_3 {
         /// <returns>年齢</returns>
         public int GetAge() {
             DateTime wToday = DateTime.Today;
-            int wAge = wToday.Year - Birthday.Year;
-            if (wToday < Birthday.AddYears(wAge)) {
+            int wAge = wToday.Year - this.Birthday.Year;
+            if (wToday < this.Birthday.AddYears(wAge)) {
                 wAge--;
             }
             return wAge;
