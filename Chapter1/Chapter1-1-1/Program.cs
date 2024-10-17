@@ -15,15 +15,15 @@ namespace Chapter1_1_1 {
         　　どら焼きオブジェクトの消費税額を求め、コンソールに出力するコードを書いてください。
 
         　　3.
-        　　Productクラスが属する名前空間を別の名前空間に変更し、Maiaメソッドから呼び出すようにしてください。
+        　　Productクラスが属する名前空間を別の名前空間に変更し、Mainメソッドから呼び出すようにしてください。
         　　ただし、MainメソッドのあるProgramクラスの名前空間はそのままとしてください */
 
         static void Main(string[] args) {
             // 1.
-            Product wDorayaki = new Product(98, "どら焼き", 210);
+            var wDorayaki = new Product(98, "どら焼き", 210);
 
             // 2.
-            Console.WriteLine("消費税額は{0}円です。", wDorayaki.GetTax());
+            Console.WriteLine($"消費税額は{wDorayaki.GetTax()}円です。");
         }
     }
 }

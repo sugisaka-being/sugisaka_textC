@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace Chapter1_1_3 {
     /// <summary>
     /// 人間クラス

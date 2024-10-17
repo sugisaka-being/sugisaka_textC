@@ -22,10 +22,7 @@ namespace Chapter1_1_3 {
 
         static void Main(string[] args) {
             // 2.
-            Student wStudent = new Student(1, 1) {
-                Name = "Reina",
-                Birthday = new DateTime(2001, 11, 21),
-            };
+            var wStudent = new Student("Reina", new DateTime(2001, 11, 21), 1, 1) {};
 
             // 3.
             Console.WriteLine($"氏名：{wStudent.Name}、学年：{wStudent.Grade}、組：{wStudent.ClassNumber}、生年月日：{wStudent.Birthday:yyyy年M月d日})");

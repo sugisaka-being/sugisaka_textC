@@ -2,22 +2,21 @@
     /// <summary>
     /// 商品クラス
     /// </summary>
-    /// 
     internal class Product {
         /// <summary>
         /// 商品コード
         /// </summary>
-        public int Code { get; private set; }
+        public int Code { get; }
 
         /// <summary>
         /// 商品名
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// 商品価格（税抜き）
         /// </summary>
-        public int Price { get; private set; }
+        public int Price { get; }
 
         /// <summary>
         /// 商品クラスのコンストラクタ

@@ -30,8 +30,8 @@ namespace Chapter1_1_2 {
 
             // 3.
             PrintDoubleObject(wMyClass1, wMyStruct1);
-            Console.WriteLine("MyClass4: ({0},{1})", wMyClass1.X, wMyClass1.Y);
-            Console.WriteLine("MyStruct4: ({0},{1})", wMyStruct1.X, wMyStruct1.Y);
+            Console.WriteLine($"MyClass4: ({wMyClass1.X},{wMyClass1.Y})");
+            Console.WriteLine($"MyStruct4: ({wMyStruct1.X},{wMyStruct1.Y})");
 
             // 4.
             /* 3.の処理を行った後にMyClass、MyStructのオブジェクトを表示させると、
@@ -52,8 +52,8 @@ namespace Chapter1_1_2 {
         /// <param name="vMyClass">クラス</param>
         /// <param name="vMyStruct">構造体</param>
         static void PrintObject(MyClass vMyClass, MyStruct vMyStruct) {
-            Console.WriteLine("MyClass1: ({0},{1})", vMyClass.X, vMyClass.Y);
-            Console.WriteLine("MyStruct1: ({0},{1})", vMyStruct.X, vMyStruct.Y);
+            Console.WriteLine($"MyClass1: ({vMyClass.X},{vMyClass.Y})");
+            Console.WriteLine($"MyStruct1: ({vMyStruct.X},{vMyStruct.Y})");
         }
         // 3.
         /// <summary>
@@ -66,8 +66,8 @@ namespace Chapter1_1_2 {
             vMyClass.Y *= 2;
             vMyStruct.X *= 2;
             vMyStruct.Y *= 2;
-            Console.WriteLine("MyClass3: ({0},{1})", vMyClass.X, vMyClass.Y);
-            Console.WriteLine("MyStruct3: ({0},{1})", vMyStruct.X, vMyStruct.Y);
+            Console.WriteLine($"MyClass3: ({vMyClass.X},{vMyClass.Y})");
+            Console.WriteLine($"MyStruct3: ({vMyStruct.X},{vMyStruct.Y})");
         }
 
     }
