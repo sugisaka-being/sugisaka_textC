@@ -6,14 +6,14 @@ namespace Chapter2_1_3 {
     /// 売上集計クラス
     /// </summary>
     internal class SalesCounter {
-        private IEnumerable<Sale> _sales;
+        private IEnumerable<Sale> Fsales;
 
         /// <summary>
         /// 売上集計クラスのコンストラクタ
         /// </summary>
         /// <param name="vFilePath"></param>
         public SalesCounter(string vFilePath) {
-            _sales = ReadSales(vFilePath);
+            Fsales = ReadSales(vFilePath);
         }
 
         /// <summary>
@@ -24,13 +24,9 @@ namespace Chapter2_1_3 {
         private static IEnumerable<Sale> ReadSales(string vFilePath) {
             var wSales = new List<Sale>();
             var wLines = File.ReadAllLines(vFilePath);
-            foreach (var line in wLines) {
-                var wItems = line.Split(',');
-                var wSale = new Sale {
-                    ShopName = wItems[0],
-                    ProductCategory = wItems[1],
-                    Amount = int.Parse(wItems[2])
-                };
+            foreach (var wLine in wLines) {
+                var wItems = wLine.Split(',');
+                var wSale = new Sale(wItems[0], wItems[2], int.Parse(wItems[3]));
                 wSales.Add(wSale);
             }
             return wSales;
@@ -41,14 +37,14 @@ namespace Chapter2_1_3 {
         /// </summary>
         /// <returns>商品カテゴリ別の売上高</returns>
         public IDictionary<string, int> GetPerProductSales() {
-            var wDict = new Dictionary<string, int>();
-            foreach (var sale in _sales) {
-                if (wDict.ContainsKey(sale.ProductCategory))
-                    wDict[sale.ProductCategory] += sale.Amount;
+            var wSales = new Dictionary<string, int>();
+            foreach (var wSale in Fsales) {
+                if (wSales.ContainsKey(wSale.ProductCategory))
+                    wSales[wSale.ProductCategory] += wSale.Amount;
                 else
-                    wDict[sale.ProductCategory] = sale.Amount;
+                    wSales[wSale.ProductCategory] = wSale.Amount;
             }
-            return wDict;
+            return wSales;
         }
     }
 }

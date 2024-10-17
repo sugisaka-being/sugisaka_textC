@@ -8,8 +8,8 @@ namespace Chapter2_1_2 {
         */
         static void Main(string[] args) {
 
-            for (int inch = 1; inch <= 10; inch++) {
-                Console.WriteLine($"{inch}インチは{InchConverter.ToMeter(inch)}メートルです。");
+            for (int wInch = 1; wInch <= 10; wInch++) {
+                Console.WriteLine($"{wInch}インチは{InchConverter.ToMeter(wInch)}メートルです。");
             }
         }
     }

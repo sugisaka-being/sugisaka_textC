@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Chapter2_1_1 {
     internal class Program {
@@ -31,8 +32,19 @@ namespace Chapter2_1_1 {
             };
 
             // 4.
-            foreach (var song in wSongs) {
-                Console.WriteLine($"歌のタイトル：{song.Title}、アーティスト名：{song.ArtistName}、演奏時間{song.Length/60}:{song.Length%60:00}");
+            foreach (var wSong in wSongs) {
+                Console.WriteLine($"歌のタイトル：{wSong.Title}、アーティスト名：{wSong.ArtistName}、演奏時間{new TimeSpan(0, 0, wSong.Length).ToString(@"mm\:ss")}");
+            }
+
+            // 追加課題
+            List<Song> wSongsList = new List<Song> {
+            new Song("333", "ddd", 150),
+            new Song("444", "eee", 180),
+            new Song("555", "fff", 210)
+            };
+
+            foreach (var wSong in wSongsList) {
+                Console.WriteLine($"歌のタイトル：{wSong.Title}、アーティスト名：{wSong.ArtistName}、演奏時間{new TimeSpan(0, 0, wSong.Length).ToString(@"mm\:ss")}");
             }
         }
     }

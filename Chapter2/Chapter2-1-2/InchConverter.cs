@@ -3,7 +3,7 @@
     /// インチ変換クラス
     /// </summary>
     internal class InchConverter {
-        private const double ratio = 0.0254;
+        private const double C_ratio = 0.0254;
 
         /// <summary>
         /// インチからメートルへの変換
@@ -11,7 +11,7 @@
         /// <param name="vInch">インチ</param>
         /// <returns>メートルへ変換した値</returns>
         public static double ToMeter(double vInch) {
-            return vInch * ratio;
+            return vInch * C_ratio;
         }
     }
 }
