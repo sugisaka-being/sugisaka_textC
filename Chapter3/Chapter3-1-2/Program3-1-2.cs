@@ -35,7 +35,7 @@ namespace Chapter3_1_2 {
             // 1.
             Console.WriteLine("都市名を入力してください。");
             var wLine = Console.ReadLine();
-            Console.WriteLine(wCityNames.FindIndex(n => n == wLine) != -1 ? $"{wLine}は{wCityNames.FindIndex(n => n == wLine)}番目に格納されている。" : "-1");
+            Console.WriteLine(wCityNames.FindIndex(n => n == wLine) >= 0 ? $"{wLine}は{wCityNames.FindIndex(n => n == wLine)}番目に格納されている。" : "-1");
 
             // 2.
             Console.WriteLine($"'o'が含まれている都市名は{wCityNames.Count(n => n.Contains('o'))}つある。");
