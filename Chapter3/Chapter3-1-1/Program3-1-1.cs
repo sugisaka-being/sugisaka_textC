@@ -32,15 +32,13 @@ namespace Chapter3_1_1 {
             wNumbers.ForEach(n => Console.WriteLine(n / 2.0));
 
             // 3.
-            var wNumbers1 = wNumbers.Where(n => n >= 50);
-            foreach (var wN in wNumbers1) {
-                Console.WriteLine(wN);
+            foreach (var wNumber in wNumbers.Where(n => n >= 50)) {
+                Console.WriteLine(wNumber);
             }
 
             // 4.
-            var wNumbers2 = wNumbers.Select(n => n * 2).ToList();
-            foreach (int wN in wNumbers2) {
-                Console.WriteLine(wN);
+            foreach (int wTwiceNumber in wNumbers.Select(n => n * 2).ToList()) {
+                Console.WriteLine(wTwiceNumber);
             }
         }
     }

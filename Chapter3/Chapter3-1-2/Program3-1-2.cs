@@ -35,23 +35,31 @@ namespace Chapter3_1_2 {
             // 1.
             Console.WriteLine("都市名を入力してください。");
             var wLine = Console.ReadLine();
-            Console.WriteLine($"{wLine}は{wCityNames.FindIndex(n => n == wLine)}番目に格納されている。");
+            Console.WriteLine(wCityNames.FindIndex(n => n == wLine) != -1 ? $"{wLine}は{wCityNames.FindIndex(n => n == wLine)}番目に格納されている。" : "-1");
 
             // 2.
             Console.WriteLine($"'o'が含まれている都市名は{wCityNames.Count(n => n.Contains('o'))}つある。");
 
             // 3.
             Console.WriteLine("'o'が含まれている都市名を以下に記述する。");
-            var wCityNames_o = wCityNames.Where(n => n.Contains('o')).ToArray();
-            foreach (var wCityName in wCityNames_o) {
-                Console.WriteLine(wCityName);
+            var wCityNamesContainO = wCityNames.Where(n => n.Contains('o')).ToArray();
+            foreach (var wCityNameContainO in wCityNamesContainO) {
+                Console.WriteLine(wCityNameContainO);
             }
 
             // 4.
             Console.WriteLine("'B'で始まる都市名の文字数を以下に記述する。");
-            var wCityNames_B = wCityNames.Where(n => n[0] == 'B').Select(n => n.Length).ToArray();
-            foreach (var wCityName in wCityNames_B) {
-                Console.WriteLine(wCityName);
+            var wCityNamesStartB = wCityNames.Where(n => n.StartsWith("B")).Select(n => n.Length).ToArray();
+            foreach (var wCityNameStartB in wCityNamesStartB) {
+                Console.WriteLine(wCityNameStartB);
+            }
+
+            // [追加問題]
+            // Chapter3-1-2の問4と同様に'n'で終わる都市名を抽出し、アルファベット順にならべたものを出力してください。
+            Console.WriteLine("'n'で終わる都市名をアルファベット順に並べて以下に記述する。。");
+            var wCityNamesEndN = wCityNames.Where(n => n.EndsWith("n")).OrderBy(n => n).ToArray();
+            foreach (var wCityNameEndN in wCityNamesEndN) {
+                Console.WriteLine(wCityNameEndN);
             }
         }
     }
