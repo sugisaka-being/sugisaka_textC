@@ -26,7 +26,7 @@ namespace Chapter2_1_3 {
             var wLines = File.ReadAllLines(vFilePath);
             foreach (var wLine in wLines) {
                 var wItems = wLine.Split(',');
-                var wSale = new Sale(wItems[0], wItems[2], int.Parse(wItems[3]));
+                var wSale = new Sale(wItems[0], wItems[1], int.Parse(wItems[2]));
                 wSales.Add(wSale);
             }
             return wSales;
@@ -37,14 +37,14 @@ namespace Chapter2_1_3 {
         /// </summary>
         /// <returns>商品カテゴリ別の売上高</returns>
         public IDictionary<string, int> GetPerProductSales() {
-            var wSales = new Dictionary<string, int>();
+            var wSalesPerProduct = new Dictionary<string, int>();
             foreach (var wSale in Fsales) {
-                if (wSales.ContainsKey(wSale.ProductCategory))
-                    wSales[wSale.ProductCategory] += wSale.Amount;
+                if (wSalesPerProduct.ContainsKey(wSale.ProductCategory))
+                    wSalesPerProduct[wSale.ProductCategory] += wSale.Amount;
                 else
-                    wSales[wSale.ProductCategory] = wSale.Amount;
+                    wSalesPerProduct[wSale.ProductCategory] = wSale.Amount;
             }
-            return wSales;
+            return wSalesPerProduct;
         }
     }
 }
