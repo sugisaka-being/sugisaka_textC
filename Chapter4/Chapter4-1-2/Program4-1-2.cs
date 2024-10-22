@@ -39,7 +39,7 @@ namespace Chapter4_1_2 {
 
             // 2.
             foreach (var wYearMonth in wYearMonths) {
-                Console.WriteLine(wYearMonth.AddOneMonth());
+                Console.WriteLine(wYearMonth.ToString());
             }
 
             // 4.
