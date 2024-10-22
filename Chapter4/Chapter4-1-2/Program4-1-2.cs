@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chapter4_1_2 {
@@ -28,7 +29,7 @@ namespace Chapter4_1_2 {
         */
         static void Main(string[] args) {
             // 1.
-            var wYearMonthCollection = new YearMonth[] {
+            var wYearMonths = new YearMonth[] {
                 new YearMonth(1900, 1),
                 new YearMonth(2000, 4),
                 new YearMonth(2050, 7),
@@ -37,18 +38,21 @@ namespace Chapter4_1_2 {
             };
 
             // 2.
-            foreach (var wYearMonth in wYearMonthCollection) {
-                Console.WriteLine($"{wYearMonth.Year}年{wYearMonth.Month}月");
+            foreach (var wYearMonth in wYearMonths) {
+                Console.WriteLine(wYearMonth.AddOneMonth());
             }
 
             // 4.
-            Console.WriteLine(FindFirst21Century(wYearMonthCollection)?.ToString() ?? "21世紀のデータはありません");
+            Console.WriteLine(FindFirst21Century(wYearMonths)?.Year + "年" ?? "21世紀のデータはありません");
 
             // 5.
-            var wOneMonthLaters = wYearMonthCollection.Select(x => x.AddOneMonth()).ToArray();
+            var wOneMonthLaters = wYearMonths.Select(x => x.AddOneMonth()).ToArray();
             foreach (var wOneMonthLater in wOneMonthLaters) {
                 Console.WriteLine(wOneMonthLater);
             }
+
+            // 追加課題を実装するコード
+            Console.WriteLine(FindFirst21CenturyAdd(wYearMonths)?.Year + "年" ?? "21世紀のデータはありません");
 
         }
         // 3.
@@ -57,12 +61,22 @@ namespace Chapter4_1_2 {
         /// </summary>
         /// <param name="vYearMonths">年月</param>
         /// <returns>配列の最初の21世紀（無い場合はnull）</returns>
-        static YearMonth FindFirst21Century(YearMonth[] vYearMonths) {
+        static YearMonth FindFirst21Century(IEnumerable<YearMonth> vYearMonths) {
             foreach (var wYearMonth in vYearMonths) {
                 if (wYearMonth.Is21Century)
                     return wYearMonth;
             }
             return null;
+        }
+
+        // 追加課題
+        /// <summary>
+        /// 配列の最初の21世紀を見つけるメソッド
+        /// </summary>
+        /// <param name="vYearMonths">年月</param>
+        /// <returns>配列の最初の21世紀（無い場合はnull）</returns>
+        static YearMonth FindFirst21CenturyAdd(IEnumerable<YearMonth> vYearMonths) {
+            return vYearMonths.FirstOrDefault(x => x.Is21Century);
         }
     }
 }

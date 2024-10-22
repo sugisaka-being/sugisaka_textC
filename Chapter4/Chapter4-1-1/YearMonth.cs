@@ -17,7 +17,7 @@
         /// <summary>
         /// 21世紀
         /// </summary>
-        public bool Is21Century => 2001 <= Year && Year <= 2100;
+        public bool Is21Century => 2001 <= this.Year && this.Year <= 2100;
 
         /// <summary>
         /// YearMonthクラスのコンストラクタ
@@ -35,9 +35,10 @@
         /// </summary>
         /// <returns>1カ月後の年月</returns>
         public YearMonth AddOneMonth() {
-            if (Month == 12)
-                return new YearMonth(Year + 1 , 1);
-            return new YearMonth(Year, Month + 1);
+            if (this.Month == 12) {
+                return new YearMonth(this.Year + 1, 1);
+            } 
+            return new YearMonth(this.Year, this.Month + 1);
         }
 
         // 4.
@@ -45,8 +46,6 @@
         /// ToStringをオーバーライドして年月を表示するメソッド
         /// </summary>
         /// <returns>〇年〇月</returns>
-        public override string ToString() {
-            return $"{Year}年{Month}月";
-        }
+        public override string ToString() => $"{this.Year}年{this.Month}月";
     }
 }
