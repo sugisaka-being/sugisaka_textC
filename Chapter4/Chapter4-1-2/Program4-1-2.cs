@@ -52,7 +52,7 @@ namespace Chapter4_1_2 {
             }
 
             // 追加課題を実装するコード
-            Console.WriteLine(FindFirst21CenturyAdd(wYearMonths)?.Year + "年" ?? "21世紀のデータはありません");
+            Console.WriteLine(FindFirst21CenturyAdd(wYearMonths)?.Year.ToString("0年") ?? "21世紀のデータはありません");
 
         }
         // 3.
