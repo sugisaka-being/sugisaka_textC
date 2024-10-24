@@ -9,7 +9,7 @@ namespace Chapter5_1_1 {
         */
         static void Main(string[] args) {
             Console.WriteLine("２つの文字列を入力してください");
-            Console.WriteLine(String.Compare(Console.ReadLine(), Console.ReadLine(), true) == 0 ? "2つの文字列は等しい" : "2つの文字列は異なる");
+            Console.WriteLine(string.Compare(Console.ReadLine(), Console.ReadLine(), true) == 0 ? "2つの文字列は等しい" : "2つの文字列は異なる");
         }
     }
 }
