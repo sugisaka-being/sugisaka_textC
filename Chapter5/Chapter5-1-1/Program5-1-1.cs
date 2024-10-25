@@ -8,8 +8,11 @@ namespace Chapter5_1_1 {
         　　コンソールからの入力は、Console.ReadLineメソッドを利用してください。
         */
         static void Main(string[] args) {
-            Console.WriteLine("２つの文字列を入力してください");
-            Console.WriteLine(string.Compare(Console.ReadLine(), Console.ReadLine(), true) == 0 ? "2つの文字列は等しい" : "2つの文字列は異なる");
+            Console.WriteLine("1つ目の文字列を入力してください。");
+            var wStr1 = Console.ReadLine();
+            Console.WriteLine("2つ目の文字列を入力してください。");
+            var wStr2 = Console.ReadLine();
+            Console.WriteLine(string.Compare(wStr1, wStr2, ignoreCase: true) == 0 ? "2つの文字列は等しい" : "2つの文字列は異なる");
         }
     }
 }

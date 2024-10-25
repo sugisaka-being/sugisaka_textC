@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Chapter5_1_2 {
     internal class Program {
@@ -7,11 +8,10 @@ namespace Chapter5_1_2 {
         　　入力した文字列は、int.TryParseメソッドで数値に変換してください。
         */
         static void Main(string[] args) {
-            var wNumericString = int.TryParse(Console.ReadLine(), out var wNumber);
-            if (wNumericString) {
-                Console.WriteLine(wNumber.ToString());
+            if (int.TryParse(Console.ReadLine().Normalize(NormalizationForm.FormKC), out var wNumber)) {
+                Console.WriteLine(wNumber.ToString("#,0"));
             } else {
-                Console.WriteLine("変換に失敗しました。");
+                Console.WriteLine("数字以外の文字列が入力されたため、変換に失敗しました。");
             }
         }
     }

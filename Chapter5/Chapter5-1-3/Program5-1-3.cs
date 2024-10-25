@@ -26,31 +26,28 @@ namespace Chapter5_1_3 {
         　　元の文字列の中には連続した空白は存在しないものとします。
         */
         static void Main(string[] args) {
-            var wStr = "Jackdaws love my big sphinx of quartz";
+            var wGivenString = "Jackdaws love my big sphinx of quartz";
 
             // 1.
-            Console.WriteLine($"空白は{wStr.Count(c => c == ' ')}文字あります。");
+            Console.WriteLine($"空白は{wGivenString.Count(x => x == ' ' || x == '　')}文字あります。");
 
             // 2.
-            Console.WriteLine(wStr.Replace("big", "small"));
+            Console.WriteLine(wGivenString.Replace("big", "small"));
 
             // 3.
-            Console.WriteLine($"単語は{wStr.Split(' ').Count()}つあります。");
+            Console.WriteLine($"単語は{wGivenString.Split(new[] { ' ', '　' }, StringSplitOptions.RemoveEmptyEntries).Count()}つあります。");
 
             // 4.
-            foreach (var wWord in wStr.Split(' ')) {
-                if (wWord.Length <= 4) {
-                    Console.WriteLine(wWord);
-                }
+            foreach (var wWord in wGivenString.Split(' ').Where(x => x.Length <= 4)) {
+                Console.WriteLine(wWord);
             }
 
             // 5.
-            string[] wWords = wStr.Split(' ');
-            var wNewStr = new StringBuilder();
-            foreach (var wWord in wWords) {
-                wNewStr.Append(wWord + ' ');
+            var wNewString = new StringBuilder();
+            foreach (var wWord in wGivenString.Split(' ')) {
+                wNewString.Append(wWord + ' ');
             }
-            Console.WriteLine(wNewStr.ToString());
+            Console.WriteLine(wNewString.ToString().TrimEnd());
         }
     }
 }
