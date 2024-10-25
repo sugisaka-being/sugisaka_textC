@@ -15,7 +15,7 @@ namespace Chapter5_1_4 {
             Console.WriteLine($"作家　: {wNovelInfos[0]}{Environment.NewLine}代表作: {wNovelInfos[1]}{Environment.NewLine}誕生年: {wNovelInfos[2]}");
 
             // 追加課題
-            var wAddNovelInfos = wNovel.Split(';').Select(x => x.Split('=')).ToDictionary(Infos => Infos[0], Infos => Infos[1]);
+            var wAddNovelInfos = wNovel.Split(';').Select(x => x.Split('=')).ToDictionary(x => x[0], x => x[1]);
             Console.WriteLine($"作家　: {wAddNovelInfos["Novelist"]}{Environment.NewLine}代表作: {wAddNovelInfos["BestWork"]}{Environment.NewLine}誕生年: {wAddNovelInfos["Born"]}");
         }
     }
