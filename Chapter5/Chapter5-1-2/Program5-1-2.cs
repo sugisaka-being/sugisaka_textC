@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Linq;
 
 namespace Chapter5_1_2 {
     internal class Program {
@@ -8,11 +8,17 @@ namespace Chapter5_1_2 {
         　　入力した文字列は、int.TryParseメソッドで数値に変換してください。
         */
         static void Main(string[] args) {
-            if (int.TryParse(Console.ReadLine().Normalize(NormalizationForm.FormKC), out var wNumber)) {
+            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out var wNumber)) {
                 Console.WriteLine(wNumber.ToString("#,0"));
             } else {
                 Console.WriteLine("数字以外の文字列が入力されたため、変換に失敗しました。");
             }
         }
+        /// <summary>
+        /// 半角変換メソッド
+        /// </summary>
+        /// <param name="vInputText">読み込んだ文字列</param>
+        /// <returns>読み込んだテキストを半角にした文字列</returns>
+        static string ToHankakuNumber(string vInputText) => new string(vInputText.Select(x => '０' <= x && x <= '９' ? (char)(x - '０' + '0') : x).ToArray());
     }
 }

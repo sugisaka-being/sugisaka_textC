@@ -29,7 +29,7 @@ namespace Chapter5_1_3 {
             var wGivenString = "Jackdaws love my big sphinx of quartz";
 
             // 1.
-            Console.WriteLine($"空白は{wGivenString.Count(x => x == ' ' || x == '　')}文字あります。");
+            Console.WriteLine($"空白は{wGivenString.Count(char.IsWhiteSpace)}文字あります。");
 
             // 2.
             Console.WriteLine(wGivenString.Replace("big", "small"));
