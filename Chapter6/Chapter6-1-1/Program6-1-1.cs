@@ -28,13 +28,30 @@ namespace Chapter6_1_1 {
 
             // 1.
             Console.WriteLine("1.");
-            Console.WriteLine(wNumbers.Max());
+            Console.WriteLine(wNumbers.Any() ? wNumbers.Max().ToString() : "要素がありません。");
+
+            // 追加課題
+            var wMax = 0;
+            foreach (var wNumber in wNumbers) {
+                if (wNumber > wMax) { wMax = wNumber; }
+            }
+            Console.WriteLine(wMax);
 
             // 2.
             Console.WriteLine($"{Environment.NewLine}2.");
-            var wNum = 2;
-            foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wNum)) {
+            var wTakeOutNumbersCount = 2;
+            foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wTakeOutNumbersCount)) {
                 Console.WriteLine(wNumber);
+            }
+
+            // 追加課題
+            Console.WriteLine("数値を入力してください。");
+            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out int wUserInput) && wUserInput <= wNumbers.Length) {
+                foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wUserInput)) {
+                    Console.WriteLine(wNumber);
+                }
+            } else {
+                Console.WriteLine("無効な数値が入力されました。");
             }
 
             // 3.
@@ -45,14 +62,40 @@ namespace Chapter6_1_1 {
 
             // 4.
             Console.WriteLine($"{Environment.NewLine}4.");
-            wNum = 3;
-            foreach (var wNumber in wNumbers.OrderBy(x => x).Take(wNum)) {
+            wTakeOutNumbersCount = 3;
+            foreach (var wNumber in wNumbers.OrderBy(x => x).Take(wTakeOutNumbersCount)) {
                 Console.WriteLine(wNumber);
+            }
+
+            // 追加課題
+            Console.WriteLine("数値を入力してください。");
+            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out wUserInput) && wUserInput <= wNumbers.Length) {
+                foreach (var wNumber in wNumbers.OrderBy(x => x).Take(wUserInput)) {
+                    Console.WriteLine(wNumber);
+                }
+            } else {
+                Console.WriteLine("無効な数値が入力されました。");
             }
 
             // 5.
             Console.WriteLine($"{Environment.NewLine}5.");
-            Console.WriteLine(wNumbers.Distinct().Count(x => x >10));
+            Console.WriteLine(wNumbers.Distinct().Count(x => x > 10));
+
+            // 追加課題
+            var wCount = 0;
+            foreach (var wNumber in wNumbers.Distinct()) {
+                if (wNumber > 10) {
+                    wCount++;
+                }
+            }
+            Console.WriteLine(wCount);
         }
+        /// <summary>
+        /// 半角変換メソッド
+        /// </summary>
+        /// <param name="vInputText">変換前の文字列</param>
+        /// <returns>半角に変換後の文字列</returns>
+        static string ToHankakuNumber(string vInputText)
+            => new string(vInputText.Select(x => '０' <= x && x <= '９' ? (char)(x - '０' + '0') : x).ToArray());
     }
 }
