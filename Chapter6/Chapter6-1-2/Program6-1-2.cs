@@ -52,7 +52,7 @@ namespace Chapter6_1_2 {
             };
 
             // 1.
-            if (wBooks.Where(x => x.Title == "ワンダフル・C#ライフ").Any()) {
+            if (wBooks.Any(x => x.Title == "ワンダフル・C#ライフ")) {
                 foreach (var wBook in wBooks.Where(x => x.Title == "ワンダフル・C#ライフ")) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}、ページ数：{wBook.Pages}");
                 }
@@ -64,24 +64,24 @@ namespace Chapter6_1_2 {
             Console.WriteLine($"{wBooks.Count(x => x.Title.Contains("C#"))}冊");
 
             // 3.
-            if (wBooks.Where(x => x.Title.Contains("C#")).ToList().Any()) {
+            if (wBooks.Any(x => x.Title.Contains("C#"))) {
                 Console.WriteLine($"{wBooks.Where(x => x.Title.Contains("C#")).Average(x => x.Pages)}ページ");
             } else {
                 Console.WriteLine("該当する書籍が見つかりませんでした。");
             }
 
             // 4.
-            Console.WriteLine(wBooks.FirstOrDefault(x => x.Price >= 4000).Title ?? "該当する書籍が見つかりませんでした。");
+            Console.WriteLine(wBooks.FirstOrDefault(x => x.Price >= 4000)?.Title ?? "該当する書籍が見つかりませんでした。");
 
             // 5.
-            if (wBooks.Where(x => x.Price < 4000).ToList().Any()) {
+            if (wBooks.Any(x => x.Price < 4000)) {
                 Console.WriteLine($"{wBooks.Where(x => x.Price < 4000).Max(x => x.Pages)}ページ");
             } else {
                 Console.WriteLine("該当する書籍が見つかりませんでした。");
             }
 
             // 6.
-            if (wBooks.Where(x => x.Pages >= 400).ToList().Any()) {
+            if (wBooks.Any(x => x.Pages >= 400)) {
                 foreach (var wBook in wBooks.Where(x => x.Pages >= 400).OrderByDescending(x => x.Price)) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}");
                 }
@@ -90,7 +90,7 @@ namespace Chapter6_1_2 {
             }
 
             // 7.
-            if (wBooks.Where(x => x.Title.Contains("C#") && x.Pages <= 500).ToList().Any()) {
+            if (wBooks.Any(x => x.Pages <= 500 && x.Title.Contains("C#"))) {
                 foreach (var wBook in wBooks.Where(x => x.Title.Contains("C#") && x.Pages <= 500)) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}、ページ数：{wBook.Pages}");
                 }

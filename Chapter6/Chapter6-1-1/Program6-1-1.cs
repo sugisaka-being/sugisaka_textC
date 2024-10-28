@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chapter6_1_1 {
@@ -31,9 +32,9 @@ namespace Chapter6_1_1 {
             Console.WriteLine(wNumbers.Any() ? wNumbers.Max().ToString() : "要素がありません。");
 
             // 追加課題
-            var wMax = 0;
+            var wMax = int.MinValue;
             foreach (var wNumber in wNumbers) {
-                if (wNumber > wMax) { wMax = wNumber; }
+                if (wNumber > wMax) wMax = wNumber;
             }
             Console.WriteLine(wMax);
 
@@ -46,12 +47,16 @@ namespace Chapter6_1_1 {
 
             // 追加課題
             Console.WriteLine("数値を入力してください。");
-            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out int wUserInput) && wUserInput <= wNumbers.Length) {
-                foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wUserInput)) {
-                    Console.WriteLine(wNumber);
+            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out int wUserInput)) {
+                if (wUserInput <= wNumbers.Length) {
+                    foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wUserInput)) {
+                        Console.WriteLine(wNumber);
+                    }
+                } else {
+                    Console.WriteLine("配列の要素数を超える数値が入力されました。");
                 }
             } else {
-                Console.WriteLine("無効な数値が入力されました。");
+                Console.WriteLine("数値ではない値が入力されました。");
             }
 
             // 3.
@@ -69,12 +74,16 @@ namespace Chapter6_1_1 {
 
             // 追加課題
             Console.WriteLine("数値を入力してください。");
-            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out wUserInput) && wUserInput <= wNumbers.Length) {
-                foreach (var wNumber in wNumbers.OrderBy(x => x).Take(wUserInput)) {
-                    Console.WriteLine(wNumber);
+            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out wUserInput)) {
+                if (wUserInput <= wNumbers.Length) {
+                    foreach (var wNumber in wNumbers.OrderBy(x => x).Take(wUserInput)) {
+                        Console.WriteLine(wNumber);
+                    }
+                } else {
+                    Console.WriteLine("配列の要素数を超える数値が入力されました。");
                 }
             } else {
-                Console.WriteLine("無効な数値が入力されました。");
+                Console.WriteLine("数値ではない値が入力されました。");
             }
 
             // 5.
@@ -82,9 +91,11 @@ namespace Chapter6_1_1 {
             Console.WriteLine(wNumbers.Distinct().Count(x => x > 10));
 
             // 追加課題
-            var wCount = 0;
-            foreach (var wNumber in wNumbers.Distinct()) {
-                if (wNumber > 10) {
+            int wCount = 0;
+            var wUniqueNumbers = new List<int>();
+            foreach (int wNumber in wNumbers) {
+                if (wNumber > 10 && !wUniqueNumbers.Contains(wNumber)) {
+                    wUniqueNumbers.Add(wNumber);
                     wCount++;
                 }
             }
