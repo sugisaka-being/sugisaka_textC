@@ -47,16 +47,14 @@ namespace Chapter6_1_1 {
 
             // 追加課題
             Console.WriteLine("数値を入力してください。");
-            if (int.TryParse(ToHankakuNumber(Console.ReadLine()), out int wUserInput)) {
-                if (wUserInput <= wNumbers.Length) {
-                    foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wUserInput)) {
-                        Console.WriteLine(wNumber);
-                    }
-                } else {
-                    Console.WriteLine("配列の要素数を超える数値が入力されました。");
+            if (!int.TryParse(ToHankakuNumber(Console.ReadLine()), out int wUserInput)) {
+                Console.WriteLine("数値ではない値が入力されました。");
+            } else if (wUserInput <= wNumbers.Length) {
+                foreach (var wNumber in wNumbers.Skip(wNumbers.Length - wUserInput)) {
+                    Console.WriteLine(wNumber);
                 }
             } else {
-                Console.WriteLine("数値ではない値が入力されました。");
+                Console.WriteLine("配列の要素数を超える数値が入力されました。");
             }
 
             // 3.

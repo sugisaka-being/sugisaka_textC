@@ -52,8 +52,9 @@ namespace Chapter6_1_2 {
             };
 
             // 1.
-            if (wBooks.Any(x => x.Title == "ワンダフル・C#ライフ")) {
-                foreach (var wBook in wBooks.Where(x => x.Title == "ワンダフル・C#ライフ")) {
+            var wMatchingBooks1 = wBooks.Where(x => x.Title == "ワンダフル・C#ライフ");
+            if (wMatchingBooks1.Any()) {
+                foreach (var wBook in wMatchingBooks1) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}、ページ数：{wBook.Pages}");
                 }
             } else {
@@ -64,8 +65,9 @@ namespace Chapter6_1_2 {
             Console.WriteLine($"{wBooks.Count(x => x.Title.Contains("C#"))}冊");
 
             // 3.
-            if (wBooks.Any(x => x.Title.Contains("C#"))) {
-                Console.WriteLine($"{wBooks.Where(x => x.Title.Contains("C#")).Average(x => x.Pages)}ページ");
+            var wMatchingBooks2 = wBooks.Where(x => x.Title.Contains("C#"));
+            if (wMatchingBooks2.Any()) {
+                Console.WriteLine($"{wMatchingBooks2.Average(x => x.Pages)}ページ");
             } else {
                 Console.WriteLine("該当する書籍が見つかりませんでした。");
             }
@@ -74,15 +76,17 @@ namespace Chapter6_1_2 {
             Console.WriteLine(wBooks.FirstOrDefault(x => x.Price >= 4000)?.Title ?? "該当する書籍が見つかりませんでした。");
 
             // 5.
-            if (wBooks.Any(x => x.Price < 4000)) {
-                Console.WriteLine($"{wBooks.Where(x => x.Price < 4000).Max(x => x.Pages)}ページ");
+            var wMatchingBooks3 = wBooks.Where(x => x.Price < 4000);
+            if (wMatchingBooks3.Any()) {
+                Console.WriteLine($"{wMatchingBooks3.Max(x => x.Pages)}ページ");
             } else {
                 Console.WriteLine("該当する書籍が見つかりませんでした。");
             }
 
             // 6.
-            if (wBooks.Any(x => x.Pages >= 400)) {
-                foreach (var wBook in wBooks.Where(x => x.Pages >= 400).OrderByDescending(x => x.Price)) {
+            var wMatchingBooks4 = wBooks.Where(x => x.Pages >= 400);
+            if (wMatchingBooks4.Any()) {
+                foreach (var wBook in wMatchingBooks4.OrderByDescending(x => x.Price)) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}");
                 }
             } else {
@@ -90,8 +94,9 @@ namespace Chapter6_1_2 {
             }
 
             // 7.
-            if (wBooks.Any(x => x.Pages <= 500 && x.Title.Contains("C#"))) {
-                foreach (var wBook in wBooks.Where(x => x.Title.Contains("C#") && x.Pages <= 500)) {
+            var wMatchingBooks5 = wBooks.Where(x => x.Pages <= 500 && x.Title.Contains("C#"));
+            if (wMatchingBooks5.Any()) {
+                foreach (var wBook in wMatchingBooks5) {
                     Console.WriteLine($"タイトル：{wBook.Title}、価格：{wBook.Price}、ページ数：{wBook.Pages}");
                 }
             } else {
