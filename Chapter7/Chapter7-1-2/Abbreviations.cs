@@ -20,8 +20,13 @@ namespace Chapter7_1_2 {
         /// 略語と対応する日本語を管理するクラスのコンストラクタ
         /// </summary>
         public Abbreviations() {
-            var wLines = File.ReadAllLines(@"..\..\Abbreviations.txt");
-            FAbbreviationCollection = wLines.Select(x => x.Split('=')).ToDictionary(x => x[0], x => x[1]);
+            var wFilePath = @"..\..\Abbreviations.txt";
+            if (File.Exists(wFilePath)) {
+                var wLines = File.ReadAllLines(wFilePath);
+                FAbbreviationCollection = wLines.Select(x => x.Split('=')).ToDictionary(x => x[0], x => x[1]);
+            } else {
+                Console.WriteLine("ファイルが見つかりませんでした。");
+            }
         }
 
         /// <summary>

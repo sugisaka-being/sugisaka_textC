@@ -30,13 +30,14 @@ namespace Chapter7_1_2 {
             Console.WriteLine("削除したい略語を入力してください。例）IOC");
             if (wAbbrs.Remove(Console.ReadLine())) {
                 Console.WriteLine("要素が削除されました。");
+                Console.WriteLine($"{wAbbrs.Count}用語登録されています。");
             } else {
                 Console.WriteLine("要素が見つかりませんでした。");
             }
 
             // 4.
             var wFetcher = new Abbreviations();
-             wFetcher.FetchAbbrsWithKey(wAbbrs, 3);
+            wFetcher.FetchAbbrsWithKey(wAbbrs, 3);
         }
     }
 }
