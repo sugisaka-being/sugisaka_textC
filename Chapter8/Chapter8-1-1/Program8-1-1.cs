@@ -15,7 +15,7 @@ namespace Chapter8_1_1 {
             wCulture.DateTimeFormat.Calendar = new JapaneseCalendar();
             Console.WriteLine(wNow.ToString("yyyy/MM/dd HH:mm"));
             Console.WriteLine(wNow.ToString("yyyy年MM月dd日 HH時mm分ss秒"));
-            Console.WriteLine(wNow.ToString("ggyy年 M月dd日(dddd)", wCulture));
+            Console.WriteLine(wNow.ToString($"ggyy年{wNow.Month,2}月d日(dddd)", wCulture));
         }
     }
 }
