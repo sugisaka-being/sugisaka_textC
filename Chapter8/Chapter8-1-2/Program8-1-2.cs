@@ -20,7 +20,7 @@ namespace Chapter8_1_2 {
         /// <returns>次の週の指定曜日の日付</returns>
         public static DateTime GetNextWeekDay(DateTime vDate, DayOfWeek vDayOfWeek) {
             var wDays = (int)vDayOfWeek - (int)(vDate.DayOfWeek);
-            if (wDays <= 0) wDays += 7;
+            if (wDays < 0) wDays += 7;
             return vDate.AddDays(wDays + 7);
         }
     }
