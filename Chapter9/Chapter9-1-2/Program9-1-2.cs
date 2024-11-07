@@ -10,10 +10,13 @@ namespace Chapter9_1_2 {
         */
         static void Main(string[] args) {
             var wFilePath = @"..\..\9_Sample.txt";
-            if (File.Exists(wFilePath)) {
-                var wOutputFilePath = @"..\..\Output.txt";
-                File.WriteAllLines(wOutputFilePath, File.ReadLines(wFilePath).Select((x, y) => string.Format($"{y + 1,2}:{x}")));
-            } else Console.WriteLine("読み込むファイルが存在しません。");
+            if (!File.Exists(wFilePath)) {
+                Console.WriteLine("読み込むファイルが存在しません。");
+                return;
+            }
+            var wOutputFilePath = @"..\..\Output.txt";
+            var wLineNumberLength = File.ReadLines(wFilePath).Count().ToString().Length;
+            File.WriteAllLines(wOutputFilePath, File.ReadLines(wFilePath).Select((x, y) => string.Format($"{(y + 1).ToString().PadLeft(wLineNumberLength)}:{x}")));
         }
     }
 }

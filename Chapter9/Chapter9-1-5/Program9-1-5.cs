@@ -10,7 +10,8 @@ namespace Chapter9_1_5 {
         */
         static void Main(string[] args) {
             var wTargetDirectory = new DirectoryInfo(@"..\..\CheckFileSize9-1-5");
-            var wTargetFiles = wTargetDirectory.EnumerateFiles().Where(x => x.Length > 1048576);
+            const long C_OneMegabyte = 1 * 1024 * 1024;
+            var wTargetFiles = wTargetDirectory.EnumerateFiles("*", SearchOption.AllDirectories).Where(x => x.Length >= C_OneMegabyte);
             if (wTargetFiles.Any()) {
                 foreach (var wTargetFile in wTargetFiles) {
                     Console.WriteLine(wTargetFile.Name);

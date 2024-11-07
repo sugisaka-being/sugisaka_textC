@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Chapter9_1_1 {
     internal class Program {
@@ -16,32 +17,33 @@ namespace Chapter9_1_1 {
         　　・リテラル文字列やコメントの中には、"class"という単語は含まれていない
 
         　　2.
-        　　このプログラムをFile.ReadAAllLinesメソッドを利用して書き換えてください。
+        　　このプログラムをFile.ReadAllLinesメソッドを利用して書き換えてください。
 
         　　3.
         　　このプログラムをFile.ReadLinesメソッドを利用して書き換えてください。
         */
         static void Main(string[] args) {
-            var wFilePath = @"..\..\9_CountClass.txt";
+            var wFilePath = @"..\..\SampleClass.cs";
 
-            if (File.Exists(wFilePath)) {
+            if (!File.Exists(wFilePath)) {
+                Console.WriteLine("指定されたファイルが存在しません。");
+                return;
+            }
 
-                // 1.
-                var wCountClass = 0;
-                using (var wReader = new StreamReader(wFilePath, Encoding.UTF8)) {
-                    while (!wReader.EndOfStream) {
-                        if (wReader.ReadLine().Contains("class")) wCountClass++;
-                    }
+            // 1.
+            var wCountClass = 0;
+            using (var wReader = new StreamReader(wFilePath, Encoding.UTF8)) {
+                while (!wReader.EndOfStream) {
+                    if (Regex.IsMatch(wReader.ReadLine(), @"\bclass\b")) wCountClass++;
                 }
-                Console.WriteLine(wCountClass);
+            }
+            Console.WriteLine(wCountClass);
 
-                // 2.
-                Console.WriteLine(File.ReadAllLines(wFilePath, Encoding.UTF8).Count(x => x.Contains("class")));
+            // 2.
+            Console.WriteLine(File.ReadAllLines(wFilePath, Encoding.UTF8).Count(x => Regex.IsMatch(x, @"\bclass\b")));
 
-                // 3.
-                Console.WriteLine(File.ReadLines(wFilePath, Encoding.UTF8).Count(x => x.Contains("class")));
-
-            } else Console.WriteLine("指定されたファイルが存在しません。");
+            // 3.
+            Console.WriteLine(File.ReadLines(wFilePath, Encoding.UTF8).Count(x => Regex.IsMatch(x, @"\bclass\b")));
         }
     }
 }

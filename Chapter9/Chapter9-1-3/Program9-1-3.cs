@@ -8,15 +8,18 @@ namespace Chapter9_1_3 {
         　　コマンドラインで2つのテキストファイルのパス名を指定できるようにしてください。
         */
         static void Main(string[] args) {
-            Console.WriteLine("追加先のファイルのパスを入力してください");
-            var wOriginalFile = Console.ReadLine();
-            Console.WriteLine("追加元のファイルのパスを入力してください。");
-            var wAddFile = Console.ReadLine();
-            if (File.Exists(wAddFile)) {
-                File.AppendAllLines(wOriginalFile, File.ReadLines(wAddFile));
-            } else {
-                Console.WriteLine("無効なファイルパスが入力されました。");
+            if (args.Length < 2) {
+                Console.WriteLine("元のファイルと追加するファイルのパスを入力してください");
+                return;
             }
+            var wOriginalFile = args[0];
+            var wAddFile = args[1];
+            if (!File.Exists(wAddFile)) {
+                Console.WriteLine("無効なファイルパスが入力されました。");
+                return;
+            }
+            File.AppendAllLines(wOriginalFile, File.ReadLines(wAddFile));
+            Console.WriteLine("ファイルの追加が完了しました。");
         }
     }
 }

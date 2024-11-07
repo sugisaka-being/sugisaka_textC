@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Chapter9_1_4 {
     internal class Program {
@@ -10,8 +11,15 @@ namespace Chapter9_1_4 {
         */
         static void Main(string[] args) {
             var wSpecifyDirectory = new DirectoryInfo(@"..\..\CopySource_9-1-4");
+            if (!Directory.Exists(wSpecifyDirectory.FullName)) {
+                Console.WriteLine("コピー元のファイルが存在しませんでした。");
+                return;
+            }
             var wDirectoryFiles = wSpecifyDirectory.GetFiles();
             var wTargetDirectory = @"..\..\CopyTarget_9-1-4";
+            if (!Directory.Exists(wTargetDirectory)) {
+                Directory.CreateDirectory(wTargetDirectory);
+            }
             foreach (var wDirectoryFile in wDirectoryFiles) {
                 var wCopyFileName = Path.Combine(wTargetDirectory, Path.GetFileNameWithoutExtension(wDirectoryFile.FullName) + "_bak" + wDirectoryFile.Extension);
                 wDirectoryFile.CopyTo(wCopyFileName, overwrite: true);
