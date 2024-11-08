@@ -8,9 +8,10 @@ namespace Chapter10_1_6 {
         　　数字や記号だけから成る回文を除外するにはどうしたら良いかも考えてください。
         */
         static void Main(string[] args) {
-            var wText = "とまと しんぶん しんぶんし あいうえお るすにする pop level noon 12321 _____";
-            var wFivePalindromes = Regex.Matches(wText, @"\b([a-zA-Zあ-んア-ン])([a-zA-Zあ-んア-ン])\w\2\1\b");
+            var wText = "とまと しんぶん しんぶんし あいうえお るすにする pop level noon 12321 _____ ああ.ああ";
+            var wFivePalindromes = Regex.Matches(wText, @"(?!(?:[\d\W]{5}))\b(\w)(\w)\w\2\1\b");
             foreach (Match wFivePalindrome in wFivePalindromes) Console.WriteLine(wFivePalindrome);
+            // (?!(?:[/b\W]{5})
         }
     }
 }
