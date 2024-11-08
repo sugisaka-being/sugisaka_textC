@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Chapter10_1_2 {
@@ -9,16 +10,13 @@ namespace Chapter10_1_2 {
         */
         static void Main(string[] args) {
             var wTextFile = @"..\..\Sample10-1-2.txt";
-            var wNumberMoreThree = @"\b\d{3,}\b";
-            if (File.Exists(wTextFile)) {
-                var wNumberTexts = File.ReadAllLines(wTextFile);
-                foreach (var wNumberText in wNumberTexts) {
-                    var wMatcheNumbers = Regex.Matches(wNumberText, wNumberMoreThree);
-                    foreach (Match wMatcheNumber in wMatcheNumbers) {
-                        Console.WriteLine(wMatcheNumber.Value);
-                    }
-                }
-            } else Console.WriteLine("テキストファイルが存在しませんでした。");
+            if (!File.Exists(wTextFile)) {
+                Console.WriteLine("テキストファイルが存在しませんでした。");
+                return;
+            }
+            File.ReadAllLines(wTextFile).SelectMany(x => Regex.Matches(x, @"\b\d{3,}\b").Cast<Match>())
+                .ToList()
+                .ForEach(x => Console.WriteLine($"{x.Value}"));
         }
     }
 }

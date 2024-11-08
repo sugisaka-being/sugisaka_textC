@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Chapter10_1_3 {
@@ -20,13 +21,9 @@ namespace Chapter10_1_3 {
                 "It will take time.",
                 "We reorganized the timetable.",
             };
-            var wTextPatternTime = @"\b[Tt]ime\b";
-            foreach (var wText in wTexts) {
-                var wTextsWithTime = Regex.Matches(wText, wTextPatternTime);
-                foreach (Match wTextWithTime in wTextsWithTime) {
-                    Console.WriteLine($"{wText} での開始位置は {wTextWithTime.Index}");
-                }
-            }
+            wTexts.SelectMany(x => Regex.Matches(x, @"\b[Tt]ime\b", RegexOptions.IgnoreCase).Cast<Match>().Select(y => new { TextsWithTime = x, StartIndex = y.Index }))
+                .ToList()
+                .ForEach(x => Console.WriteLine($"{x.TextsWithTime} での開始位置は {x.StartIndex}"));
         }
     }
 }

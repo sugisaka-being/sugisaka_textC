@@ -9,8 +9,7 @@ namespace Chapter10_1_6 {
         */
         static void Main(string[] args) {
             var wText = "とまと しんぶん しんぶんし あいうえお るすにする pop level noon 12321";
-            var wPalindromePattern = @"[(?=.*[a-zA-Z])]\b(\w)(\w)\w\2\1";
-            var wFivePalindromes = Regex.Matches(wText, wPalindromePattern);
+            var wFivePalindromes = Regex.Matches(wText, @"(?=.*[a-zA-Z])\b(\w)(\w)\w\2\1");
             foreach (Match wFivePalindrome in wFivePalindromes) Console.WriteLine(wFivePalindrome);
         }
     }

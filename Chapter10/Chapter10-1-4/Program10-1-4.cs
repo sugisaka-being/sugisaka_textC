@@ -12,10 +12,8 @@ namespace Chapter10_1_4 {
         */
         static void Main(string[] args) {
             var wVersionTexts = @"..\..\Sample10-1-4.txt";
-            var wBeforeConvert = @"[Vv]ersion\s*=\s*""v4.0""";
-            var wAfterConvert = @"version=""v5.0""";
             var wVersionLines = File.ReadAllLines(wVersionTexts);
-            File.WriteAllLines(wVersionTexts, wVersionLines.Select(x => Regex.Replace(x, wBeforeConvert, wAfterConvert)));
+            File.WriteAllLines(wVersionTexts, wVersionLines.Select(x => Regex.Replace(x, @"[Vv]ersion\s*=\s*""v4.0""", @"version=""v5.0""")));
         }
     }
 }

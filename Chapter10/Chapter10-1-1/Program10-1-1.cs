@@ -10,8 +10,7 @@ namespace Chapter10_1_1 {
         */
         static void Main(string[] args) {
             var wNumber = "080-0000-1111";
-            var wPhoneNumber = @"^0[789]0-\d{4}-\d{4}$";
-            CheckPhoneNumber(wNumber, wPhoneNumber);
+            CheckPhoneNumber(wNumber);
         }
 
         /// <summary>
@@ -19,8 +18,8 @@ namespace Chapter10_1_1 {
         /// </summary>
         /// <param name="vNumber">指定された文字列</param>
         /// <param name="vPhoneNumber">電話番号のパターン</param>
-        static void CheckPhoneNumber(string vNumber, string vPhoneNumber) {
-            if (Regex.IsMatch(vNumber, vPhoneNumber)) {
+        static void CheckPhoneNumber(string vNumber) {
+            if (Regex.IsMatch(vNumber, @"^0[789]0-\d{4}-\d{4}$")) {
                 Console.WriteLine($"{vNumber} は電話番号です。");
             } else Console.WriteLine($"{vNumber} は電話番号ではありません。");
         }

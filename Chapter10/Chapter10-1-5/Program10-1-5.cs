@@ -11,9 +11,8 @@ namespace Chapter10_1_5 {
         */
         static void Main(string[] args) {
             var wConvertFile = @"..\..\Sample10-1-5.html";
-            var wBeforeConvert = @"<(/?)([A-Z][A-Z0-9]*)(.*?)>";
             var wVersionLines = File.ReadAllLines(wConvertFile);
-            File.WriteAllLines(wConvertFile, wVersionLines.Select(x => Regex.Replace(x, wBeforeConvert, y => $"<{y.Groups[1].Value}{y.Groups[2].Value.ToLower()}{y.Groups[3].Value}>")));
+            File.WriteAllLines(wConvertFile, wVersionLines.Select(x => Regex.Replace(x, @"<(/?)([A-Z][A-Z0-9]*)(.*?)>", y => $"<{y.Groups[1].Value}{y.Groups[2].Value.ToLower()}{y.Groups[3].Value}>")));
         }
     }
 }
