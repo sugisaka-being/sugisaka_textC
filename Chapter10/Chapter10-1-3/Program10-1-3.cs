@@ -21,7 +21,7 @@ namespace Chapter10_1_3 {
                 "It will take time.",
                 "We reorganized the timetable.",
             };
-            wTexts.SelectMany(x => Regex.Matches(x, @"\b[Tt]ime\b", RegexOptions.IgnoreCase).Cast<Match>().Select(y => new { TextsWithTime = x, StartIndex = y.Index }))
+            wTexts.SelectMany(x => Regex.Matches(x, @"\btime\b", RegexOptions.IgnoreCase).Cast<Match>().Select(y => new { TextsWithTime = x, StartIndex = y.Index }))
                 .ToList()
                 .ForEach(x => Console.WriteLine($"{x.TextsWithTime} での開始位置は {x.StartIndex}"));
         }
