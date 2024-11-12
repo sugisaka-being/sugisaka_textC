@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEmployee xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Chapter12_1_1">
+  <Employee>
+    <HireDate>2005-05-05T00:00:00</HireDate>
+    <Id>10</Id>
+    <Name>かかかか 太郎</Name>
+  </Employee>
+  <Employee>
+    <HireDate>2015-05-05T00:00:00</HireDate>
+    <Id>50</Id>
+    <Name>きききき 花子</Name>
+  </Employee>
+</ArrayOfEmployee>
