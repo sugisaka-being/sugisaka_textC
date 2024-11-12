@@ -43,7 +43,8 @@ namespace Chapter11_1_1 {
         */
         static void Main(string[] args) {
             // 1.
-            var wSportsFile = @"..\..\Sample11-1-1.xml";
+            Console.WriteLine("ファイルのパスを入力してください。例）..\\..\\Sample11-1-1.xml");
+            var wSportsFile = Console.ReadLine();
             if (!File.Exists(wSportsFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
@@ -61,17 +62,38 @@ namespace Chapter11_1_1 {
             }
 
             // 3.
-            var wMaxMemberSport = wSportsElements.OrderByDescending(x => int.Parse(x.Element("teammembers").Value)).First();
+            var wMaxMemberSport = wSportsElements.OrderByDescending(x => {
+                if (int.TryParse(x.Element("teammembers").Value, out int wTeamMembers)) {
+                    return wTeamMembers;
+                } else {
+                    Console.WriteLine("メンバー人数を数値に変換できませんでした。");
+                    return 0;
+                }
+            })
+            .First();
             Console.WriteLine($"競技名：{wMaxMemberSport.Element("name").Value}　メンバー人数：{wMaxMemberSport.Element("teammembers").Value}人");
 
             // 4.
-            var wSoccerDocument = new XElement("ballsport",
-                new XElement("name", "サッカー", new XAttribute("kanji", "蹴球")),
-                new XElement("teammembers", "11"),
-                new XElement("firstplayed", "1863")
+            AddSportElement(wSportsDocumement, "サッカー", "蹴球", 11, 1863);
+            Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-1.xml");
+            wSportsDocumement.Save(Console.ReadLine());
+            Console.WriteLine("ファイルが保存されました。");
+        }
+        /// <summary>
+        /// スポーツを追加するメソッド
+        /// </summary>
+        /// <param name="vDocument">スポーツの情報の記録</param>
+        /// <param name="vName">スポーツの名前</param>
+        /// <param name="vKanji">漢字の名前</param>
+        /// <param name="vTeamMembers">チームのメンバー数</param>
+        /// <param name="vFirstPlayed">最初にプレーされた年</param>
+        static void AddSportElement(XDocument vDocument, string vName, string vKanji, int vTeamMembers, int vFirstPlayed) {
+            var wSportsElements = new XElement("ballsport",
+                new XElement("name", vName, new XAttribute("kanji", vKanji)),
+                new XElement("teammembers", vTeamMembers.ToString()),
+                new XElement("firstplayed", vFirstPlayed.ToString())
             );
-            wSportsDocumement.Root.Add(wSoccerDocument);
-            wSportsDocumement.Save(@"..\..\NewSample11-1-1.xml");
+            vDocument.Root.Add(wSportsElements);
         }
     }
 }

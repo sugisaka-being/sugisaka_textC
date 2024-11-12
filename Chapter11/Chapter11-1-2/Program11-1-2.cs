@@ -39,19 +39,34 @@ namespace Chapter11_1_2 {
         　　</difficultkanji>
         */
         static void Main(string[] args) {
-            var wWordsFile = @"..\..\Sample11-1-2.xml";
-            if (!File.Exists(wWordsFile)) {
+            Console.WriteLine("ファイルのパスを入力してください。例）..\\..\\Sample11-1-2.xml");
+            var wOriginalWords = Console.ReadLine();
+            if (!File.Exists(wOriginalWords)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
+            } else if (Path.GetExtension(wOriginalWords).ToLower() != ".xml") {
+                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
+                return;
             }
-            var wWordsDocument = XDocument.Load(wWordsFile);
+            var wWordsDocument = XDocument.Load(wOriginalWords);
             var wNewWordsElements = wWordsDocument.Root.Elements()
-                .Select(x => new XElement("word",
-                    new XAttribute("kanji", x.Element("kanji").Value),
-                    new XAttribute("yomi", x.Element("yomi").Value)
-                ));
+                .Select(x => TransformeElements(x));
             var wWordsRoot = new XElement("difficultkanji", wNewWordsElements);
-            wWordsRoot.Save(@"..\..\NewSample11-1-2.xml");
+            Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-2.xml");
+            wWordsRoot.Save(Console.ReadLine());
+            Console.WriteLine("ファイルが保存されました。");
+        }
+        /// <summary>
+        /// XMLデータを新しい形式に変換するメソッド
+        /// </summary>
+        /// <param name="vOriginalElements">元の要素</param>
+        /// <returns>変換後の要素</returns>
+        static XElement TransformeElements(XElement vOriginalElements) {
+            if (vOriginalElements == null) return null;
+            return new XElement("word",
+                new XAttribute("kanji", vOriginalElements.Element("kanji")?.Value ?? "不明"),
+                new XAttribute("yomi", vOriginalElements.Element("yomi")?.Value ?? "不明")
+            );
         }
     }
 }
