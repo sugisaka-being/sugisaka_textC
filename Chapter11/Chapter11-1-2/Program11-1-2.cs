@@ -50,7 +50,7 @@ namespace Chapter11_1_2 {
             }
             var wWordsDocument = XDocument.Load(wOriginalWords);
             var wNewWordsElements = wWordsDocument.Root.Elements()
-                .Select(x => TransformeElements(x));
+                .Select(x => TransformElements(x));
             var wWordsRoot = new XElement("difficultkanji", wNewWordsElements);
             Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-2.xml");
             wWordsRoot.Save(Console.ReadLine());
@@ -61,12 +61,13 @@ namespace Chapter11_1_2 {
         /// </summary>
         /// <param name="vOriginalElements">元の要素</param>
         /// <returns>変換後の要素</returns>
-        static XElement TransformeElements(XElement vOriginalElements) {
+        static XElement TransformElements(XElement vOriginalElements) {
             if (vOriginalElements == null) return null;
-            return new XElement("word",
-                new XAttribute("kanji", vOriginalElements.Element("kanji")?.Value ?? "不明"),
-                new XAttribute("yomi", vOriginalElements.Element("yomi")?.Value ?? "不明")
-            );
+            var wNewElement = new XElement("word");
+            foreach (var wElement in vOriginalElements.Elements()) {
+                wNewElement.Add(new XAttribute(wElement.Name, wElement?.Value ?? "不明"));
+            }
+            return wNewElement;
         }
     }
 }

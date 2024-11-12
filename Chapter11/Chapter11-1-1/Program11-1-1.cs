@@ -49,8 +49,8 @@ namespace Chapter11_1_1 {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
             }
-            var wSportsDocumement = XDocument.Load(wSportsFile);
-            var wSportsElements = wSportsDocumement.Root.Elements();
+            var wSportsDocument = XDocument.Load(wSportsFile);
+            var wSportsElements = wSportsDocument.Root.Elements();
             foreach (var wSportsElement in wSportsElements) {
                 Console.WriteLine($"競技名：{wSportsElement.Element("name").Value}　チームメンバー数：{wSportsElement.Element("teammembers").Value}");
             }
@@ -74,9 +74,9 @@ namespace Chapter11_1_1 {
             Console.WriteLine($"競技名：{wMaxMemberSport.Element("name").Value}　メンバー人数：{wMaxMemberSport.Element("teammembers").Value}人");
 
             // 4.
-            AddSportElement(wSportsDocumement, "サッカー", "蹴球", 11, 1863);
+            AddSportElement(wSportsDocument, "サッカー", "蹴球", 11, 1863);
             Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-1.xml");
-            wSportsDocumement.Save(Console.ReadLine());
+            wSportsDocument.Save(Console.ReadLine());
             Console.WriteLine("ファイルが保存されました。");
         }
         /// <summary>
