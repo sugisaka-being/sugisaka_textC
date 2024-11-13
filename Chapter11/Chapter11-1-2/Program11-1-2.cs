@@ -39,8 +39,8 @@ namespace Chapter11_1_2 {
         　　</difficultkanji>
         */
         static void Main(string[] args) {
-            Console.WriteLine("ファイルのパスを入力してください。例）..\\..\\Sample11-1-2.xml");
-            var wOriginalWords = Console.ReadLine();
+            Console.WriteLine("ファイル名を入力してください。例）Sample11-1-2.xml");
+            var wOriginalWords = Path.Combine("..", "..", Console.ReadLine());
             if (!File.Exists(wOriginalWords)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
@@ -52,9 +52,18 @@ namespace Chapter11_1_2 {
             var wNewWordsElements = wWordsDocument.Root.Elements()
                 .Select(x => TransformElements(x));
             var wWordsRoot = new XElement("difficultkanji", wNewWordsElements);
-            Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-2.xml");
-            wWordsRoot.Save(Console.ReadLine());
-            Console.WriteLine("ファイルが保存されました。");
+            Console.WriteLine("新しい情報を保存するXMLファイルのファイル名を入力してください。例）NewSample11-1-2.xml");
+            var wTransformedWords = Path.Combine("..", "..", Console.ReadLine());
+            if (Path.GetExtension(wTransformedWords).ToLower() != ".xml") {
+                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
+                return;
+            }
+            wWordsRoot.Save(wTransformedWords);
+            if (!File.Exists(wTransformedWords)) {
+                Console.WriteLine("指定されたファイルの保存に失敗しました。");
+                return;
+            }
+            Console.WriteLine("指定されたファイルが保存されました。");
         }
         /// <summary>
         /// XMLデータを新しい形式に変換するメソッド

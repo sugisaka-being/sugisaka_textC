@@ -43,10 +43,13 @@ namespace Chapter11_1_1 {
         */
         static void Main(string[] args) {
             // 1.
-            Console.WriteLine("ファイルのパスを入力してください。例）..\\..\\Sample11-1-1.xml");
-            var wSportsFile = Console.ReadLine();
+            Console.WriteLine("XMLファイルのファイル名を入力してください。例）Sample11-1-1.xml");
+            var wSportsFile = Path.Combine("..", "..", Console.ReadLine());
             if (!File.Exists(wSportsFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
+                return;
+            } else if (Path.GetExtension(wSportsFile).ToLower() != ".xml") {
+                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
                 return;
             }
             var wSportsDocument = XDocument.Load(wSportsFile);
@@ -75,9 +78,18 @@ namespace Chapter11_1_1 {
 
             // 4.
             AddSportElement(wSportsDocument, "サッカー", "蹴球", 11, 1863);
-            Console.WriteLine("新しい情報を保存するファイルパス名を入力してください。例）..\\..\\NewSample11-1-1.xml");
-            wSportsDocument.Save(Console.ReadLine());
-            Console.WriteLine("ファイルが保存されました。");
+            Console.WriteLine("新しい情報を保存するXMLファイルのファイル名を入力してください。例）NewSample11-1-1.xml");
+            wSportsFile = Path.Combine("..", "..", Console.ReadLine());
+            if (Path.GetExtension(wSportsFile).ToLower() != ".xml") {
+                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
+                return;
+            }
+            wSportsDocument.Save(wSportsFile);
+            if (!File.Exists(wSportsFile)) {
+                Console.WriteLine("指定されたファイルの保存に失敗しました。");
+                return;
+            }
+            Console.WriteLine("指定されたファイルが保存されました。");
         }
         /// <summary>
         /// スポーツを追加するメソッド
