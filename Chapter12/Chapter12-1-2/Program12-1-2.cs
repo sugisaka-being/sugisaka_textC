@@ -39,16 +39,16 @@ namespace Chapter12_1_2 {
         static void Main(string[] args) {
             var wNovelist = new Novelist();
             // 1.
-            Console.WriteLine("XMLファイルのパスを入力してください。例）..\\..\\Sample12-1-2.xml");
-            string wReceivedFilePath = Console.ReadLine();
-            if (!File.Exists(wReceivedFilePath)) {
+            Console.WriteLine("XMLファイルのファイル名を入力してください。例）Sample12-1-2.xml");
+            string wReceivedXMLFile = Path.Combine("..", "..", Console.ReadLine());
+            if (!File.Exists(wReceivedXMLFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
-            } else if (Path.GetExtension(wReceivedFilePath).ToLower() != ".xml") {
+            } else if (Path.GetExtension(wReceivedXMLFile).ToLower() != ".xml") {
                 Console.WriteLine("指定されたファイルはXMLファイルではありません。");
                 return;
             }
-            using (var wNovelsReader = XmlReader.Create(@"..\..\Sample12-1-2.xml")) {
+            using (var wNovelsReader = XmlReader.Create(wReceivedXMLFile)) {
                 var wNovelSerializer = new XmlSerializer(typeof(Novelist));
                 wNovelist = wNovelSerializer.Deserialize(wNovelsReader) as Novelist;
                 Console.WriteLine($"名前:{wNovelist.Name}");
@@ -57,11 +57,19 @@ namespace Chapter12_1_2 {
             }
 
             // 2.
-            Console.WriteLine("JSONファイルのパスを入力してください。例）..\\..\\Employees12-1-2.json");
-            wReceivedFilePath = Console.ReadLine();
-            using (var wNovelsDataStream = new FileStream(wReceivedFilePath, FileMode.Create, FileAccess.Write)) {
+            Console.WriteLine("JSONファイルのファイル名を入力してください。例）Employees12-1-2.json");
+            var wReceivedJSONFile = Path.Combine("..", "..", Console.ReadLine());
+            if (Path.GetExtension(wReceivedJSONFile).ToLower() != ".json") {
+                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
+                return;
+            }
+            using (var wNovelsDataStream = new FileStream(wReceivedJSONFile, FileMode.Create, FileAccess.Write)) {
                 var wNovelSerializer = new DataContractJsonSerializer(wNovelist.GetType(), new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ") });
                 wNovelSerializer.WriteObject(wNovelsDataStream, wNovelist);
+            }
+            if (!File.Exists(wReceivedJSONFile)) {
+                Console.WriteLine("指定されたファイルの出力に失敗しました。");
+                return;
             }
         }
     }
