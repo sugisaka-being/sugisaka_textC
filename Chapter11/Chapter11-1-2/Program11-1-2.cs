@@ -68,15 +68,11 @@ namespace Chapter11_1_2 {
         /// <summary>
         /// XMLデータを新しい形式に変換するメソッド
         /// </summary>
-        /// <param name="vOriginalElements">元の要素</param>
+        /// <param name="vOriginalElement">元の要素</param>
         /// <returns>変換後の要素</returns>
-        static XElement TransformElements(XElement vOriginalElements) {
-            if (vOriginalElements == null) return null;
-            var wNewElement = new XElement("word");
-            foreach (var wElement in vOriginalElements.Elements()) {
-                wNewElement.Add(new XAttribute(wElement.Name, wElement?.Value ?? "不明"));
-            }
-            return wNewElement;
+        static XElement TransformElements(XElement vOriginalElement) {
+            if (vOriginalElement == null) return null;
+            return new XElement(vOriginalElement.Name, vOriginalElement.Elements().Select(x => new XAttribute(x?.Name ?? "不明", x?.Value ?? "不明")));
         }
     }
 }
