@@ -35,30 +35,23 @@ namespace Chapter12_1_1 {
         */
         static void Main(string[] args) {
             var wEmployeesQuestionOne = new Employee[] {
-                new Employee {
-                    Id = 1,
-                    Name = "ああああ 太郎",
-                    HireDate = new DateTime(2001, 1, 1),
-                },
-                new Employee {
-                    Id = 100,
-                    Name = "いいいい 花子",
-                    HireDate = new DateTime(2010, 11, 11),
-                },
+                new Employee(1, "ああああ 太郎", new DateTime(2001, 1, 1)),
+                new Employee(100, "いいいい 花子", new DateTime(2010, 11, 11)),
             };
 
             // 1.
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Employees12-1-1-1.xml");
-            string wReceivedFile = Path.Combine("..", "..", Console.ReadLine());
-            if (!CheckExtension(wReceivedFile, ".xml")) return;
-            using (var wEmployeesWriter = XmlWriter.Create(wReceivedFile)) {
+            string wInputFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            Console.WriteLine(wInputFile);
+            if (!CheckFile(wInputFile, ".xml")) return;
+            using (var wEmployeesWriter = XmlWriter.Create(wInputFile)) {
                 var wEmployeeSerializer = new XmlSerializer(wEmployeesQuestionOne.GetType());
                 wEmployeeSerializer.Serialize(wEmployeesWriter, wEmployeesQuestionOne);
             }
-            if (!CheckFile(wReceivedFile)) return;
+            if (!CheckFile(wInputFile)) return;
 
-            if (!CheckFileExtension(wReceivedFile, ".xml")) return;
-            using (var wEmployeesReader = XmlReader.Create(wReceivedFile)) {
+            if (!CheckFile(wInputFile, ".xml")) return;
+            using (var wEmployeesReader = XmlReader.Create(wInputFile)) {
                 var wEmployeeSerializer = new XmlSerializer(typeof(Employee[]));
                 var wReadEmployees = wEmployeeSerializer.Deserialize(wEmployeesReader) as Employee[];
                 foreach (var wReadEmployee in wReadEmployees) {
@@ -67,16 +60,8 @@ namespace Chapter12_1_1 {
             }
 
             var wEmployeesQuestionTwo = new Employee[] {
-                new Employee {
-                    Id = 10,
-                    Name = "かかかか 太郎",
-                    HireDate = new DateTime(2005, 5, 5),
-                },
-                new Employee {
-                    Id = 50,
-                    Name = "きききき 花子",
-                    HireDate = new DateTime(2015, 5, 5),
-                },
+                new Employee(10, "かかかか 太郎", new DateTime(2005, 5, 5)),
+                new Employee(50, "きききき 花子", new DateTime(2015, 5, 5)),
             };
 
             // 2.
@@ -86,17 +71,16 @@ namespace Chapter12_1_1 {
                 IndentChars = "  ",
             };
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Employees12-1-1-2.xml");
-            string wReceivedFileQuestionTwo = Path.Combine("..", "..", Console.ReadLine());
-            if (!CheckExtension(wReceivedFileQuestionTwo, ".xml")) return;
-            using (var wEmployeeWriter = XmlWriter.Create(wReceivedFileQuestionTwo, wEmployeesSettings)) {
+            string wInputQuestionTwo = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            using (var wEmployeeWriter = XmlWriter.Create(wInputQuestionTwo, wEmployeesSettings)) {
                 var wEmployeeSerializer = new DataContractSerializer(wEmployeesQuestionTwo.GetType());
                 wEmployeeSerializer.WriteObject(wEmployeeWriter, wEmployeesQuestionTwo);
             }
-            if (!CheckFile(wReceivedFileQuestionTwo)) return;
+            if (!CheckFile(wInputQuestionTwo)) return;
 
             // 3.
-            if (!CheckFileExtension(wReceivedFileQuestionTwo, ".xml")) return;
-            using (var wEmployeesReader = XmlReader.Create(wReceivedFileQuestionTwo)) {
+            if (!CheckFile(wInputQuestionTwo, ".xml")) return;
+            using (var wEmployeesReader = XmlReader.Create(wInputQuestionTwo)) {
                 var wEmployeeSerializer = new DataContractSerializer(typeof(Employee[]));
                 var wReadEmployees = wEmployeeSerializer.ReadObject(wEmployeesReader) as Employee[];
                 foreach (var wReadEmployee in wReadEmployees) {
@@ -105,65 +89,33 @@ namespace Chapter12_1_1 {
             }
 
             var wEmployeesQuestionFour = new Employee2[] {
-                new Employee2 {
-                    Id = 30,
-                    Name = "ささささ 太郎",
-                    HireDate = new DateTime(2020, 1, 1),
-                },
-                new Employee2 {
-                    Id = 80,
-                    Name = "しししし 花子",
-                    HireDate = new DateTime(2020, 2, 2),
-                },
+                new Employee2(30, "ささささ 太郎", new DateTime(2020, 1, 1)),
+                new Employee2(80, "しししし 花子", new DateTime(2020, 2, 2)),
             };
 
             // 4.
             Console.WriteLine("JSONファイルのファイル名を入力してください。例）Employees12-1-1-4.json");
-            string wReceivedJSONFile = Path.Combine("..", "..", Console.ReadLine());
-            if (!CheckExtension(wReceivedJSONFile, ".json")) return;
-            using (var wEmploeesDataStream = new FileStream(wReceivedJSONFile, FileMode.Create, FileAccess.Write)) {
+            string wInputJSONFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            using (var wEmploeesDataStream = new FileStream(wInputJSONFile, FileMode.Create, FileAccess.Write)) {
                 var wEmployeeSerializer = new DataContractJsonSerializer(wEmployeesQuestionFour.GetType());
                 wEmployeeSerializer.WriteObject(wEmploeesDataStream, wEmployeesQuestionFour);
             }
-            if (!CheckFile(wReceivedJSONFile)) return;
+            if (!CheckFile(wInputJSONFile)) return;
             Console.WriteLine("指定されたファイルが出力されました。");
         }
+
         /// <summary>
-        /// ファイルの存在と拡張子をチェックするメソッド
+        /// ファイルの存在をチェックし、拡張子をオプションでチェックするメソッド
         /// </summary>
         /// <param name="vFilePath">ファイル名</param>
         /// <param name="vExtension">拡張子</param>
-        /// <returns>指定された拡張子でファイルが存在している場合、treueを返す</returns>
-        static bool CheckFileExtension(string vFile, string vExtension) {
+        /// <returns>ファイルが一致する場合や拡張子が一致する場合にtureを返す</returns>
+        static bool CheckFile(string vFile, string vExtension = null) {
             if (!File.Exists(vFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return false;
-            } else if (Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
-                Console.WriteLine($"指定されたファイルは{vExtension}ファイルではありません。");
-                return false;
             }
-            return true;
-        }
-        /// <summary>
-        /// ファイルの存在（出力されているか）をチェックするメソッド
-        /// </summary>
-        /// <param name="vFile">ファイル名</param>
-        /// <returns>指定されたファイルが存在している場合（出力された場合）、trueを返す</returns>
-        static bool CheckFile(string vFile) {
-            if (!File.Exists(vFile)) {
-                Console.WriteLine("指定されたファイルが出力されませんでした。");
-                return false;
-            }
-            return true;
-        }
-        /// <summary>
-        /// ファイルの拡張子をチェックするメソッド
-        /// </summary>
-        /// <param name="vFile">ファイル名</param>
-        /// <param name="vExtension">拡張子</param>
-        /// <returns>指定した拡張子とファイルの拡張子が一致している場合、trueを返す</returns>
-        static bool CheckExtension(string vFile, string vExtension) {
-            if (Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
+            if (vExtension != null && Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
                 Console.WriteLine($"指定されたファイルは{vExtension}ファイルではありません。");
                 return false;
             }

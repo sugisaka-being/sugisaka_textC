@@ -30,5 +30,13 @@ namespace Chapter12_1_2 {
         [XmlArrayItem("title")]
         [DataMember(Name = "masterpieces")]
         public string[] Masterpieces { get; set; }
+
+        /// <summary>
+        /// 情報を表示するメソッド
+        /// </summary>
+        /// <returns>小説クラスの情報</returns>
+        public override string ToString() {
+            return $"名前:{this.Name}, 生年月日:{this.Birth:yyyy年M月d日}, 代表作:{string.Join(", ", this.Masterpieces)}";
+        }
     }
 }

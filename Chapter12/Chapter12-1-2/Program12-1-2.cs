@@ -40,37 +40,54 @@ namespace Chapter12_1_2 {
             var wNovelist = new Novelist();
             // 1.
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Sample12-1-2.xml");
-            string wReceivedXMLFile = Path.Combine("..", "..", Console.ReadLine());
-            if (!File.Exists(wReceivedXMLFile)) {
-                Console.WriteLine("指定されたファイルが存在しませんでした。");
-                return;
-            } else if (Path.GetExtension(wReceivedXMLFile).ToLower() != ".xml") {
-                Console.WriteLine("指定されたファイルはXMLファイルではありません。");
-                return;
-            }
-            using (var wNovelsReader = XmlReader.Create(wReceivedXMLFile)) {
-                var wNovelSerializer = new XmlSerializer(typeof(Novelist));
-                wNovelist = wNovelSerializer.Deserialize(wNovelsReader) as Novelist;
-                Console.WriteLine($"名前:{wNovelist.Name}");
-                Console.WriteLine($"生年月日:{wNovelist.Birth:yyyy/MM/dd}");
-                foreach (var wTitle in wNovelist.Masterpieces) Console.WriteLine($"代表作:{wTitle}");
-            }
+            wNovelist = DeserializerFromXml(Path.Combine(Environment.CurrentDirectory, Console.ReadLine()));
+            if (wNovelist == null) return;
+            Console.WriteLine(wNovelist);
 
             // 2.
-            Console.WriteLine("JSONファイルのファイル名を入力してください。例）Employees12-1-2.json");
-            var wReceivedJSONFile = Path.Combine("..", "..", Console.ReadLine());
-            if (Path.GetExtension(wReceivedJSONFile).ToLower() != ".json") {
+            Console.WriteLine("JSONファイルのファイル名を入力してください。例）Sample12-1-2.json");
+            SerializeToJson(wNovelist, Path.Combine(Environment.CurrentDirectory, Console.ReadLine()));
+        }
+
+        /// <summary>
+        /// XMLファイルをデシリアライズするメソッド
+        /// </summary>
+        /// <param name="vInputFile">デシリアライズしたいフィアル</param>
+        /// <returns>作成されたオブジェクト</returns>
+        static Novelist DeserializerFromXml(string vInputFile) {
+            if (!File.Exists(vInputFile)) {
+                Console.WriteLine("指定されたファイルが存在しませんでした。");
+                return null;
+            } else if (Path.GetExtension(vInputFile).ToLower() != ".xml") {
                 Console.WriteLine("指定されたファイルはXMLファイルではありません。");
+                return null;
+            }
+            using (var wReader = XmlReader.Create(vInputFile)) {
+                var wSerializer = new XmlSerializer(typeof(Novelist));
+                return wSerializer.Deserialize(wReader) as Novelist;
+            }
+        }
+
+        /// <summary>
+        /// JSONファイルにシリアライズするメソッド
+        /// </summary>
+        /// <param name="vNovelist">シリアライズしたいオブジェクト</param>
+        /// <param name="vInputFile">出力先のファイルパス</param>
+        static void SerializeToJson(Novelist vNovelist, string vInputFile) {
+            if (Path.GetExtension(vInputFile).ToLower() != ".json") {
+                Console.WriteLine("指定されたファイルはJSONファイルではありません。");
                 return;
             }
-            using (var wNovelsDataStream = new FileStream(wReceivedJSONFile, FileMode.Create, FileAccess.Write)) {
-                var wNovelSerializer = new DataContractJsonSerializer(wNovelist.GetType(), new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ") });
-                wNovelSerializer.WriteObject(wNovelsDataStream, wNovelist);
+            using (var wDataStream = new FileStream(vInputFile, FileMode.Create, FileAccess.Write)) {
+                var wSerializer = new DataContractJsonSerializer(typeof(Novelist),
+                    new DataContractJsonSerializerSettings { DateTimeFormat = new DateTimeFormat("yyyy-MM-dd'T'HH:mm:ssZ") });
+                wSerializer.WriteObject(wDataStream, vNovelist);
             }
-            if (!File.Exists(wReceivedJSONFile)) {
+            if (!File.Exists(vInputFile)) {
                 Console.WriteLine("指定されたファイルの出力に失敗しました。");
                 return;
             }
+            Console.WriteLine("オブジェクトがJSONファイルにシリアル化されました。");
         }
     }
 }
