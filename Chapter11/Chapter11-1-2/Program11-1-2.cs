@@ -40,7 +40,7 @@ namespace Chapter11_1_2 {
         */
         static void Main(string[] args) {
             Console.WriteLine("ファイル名を入力してください。例）Sample11-1-2.xml");
-            var wOriginalWords = Path.Combine("..", "..", Console.ReadLine());
+            var wOriginalWords = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
             if (!File.Exists(wOriginalWords)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
@@ -53,7 +53,7 @@ namespace Chapter11_1_2 {
                 .Select(x => TransformElements(x));
             var wWordsRoot = new XElement("difficultkanji", wNewWordsElements);
             Console.WriteLine("新しい情報を保存するXMLファイルのファイル名を入力してください。例）NewSample11-1-2.xml");
-            var wTransformedWords = Path.Combine("..", "..", Console.ReadLine());
+            var wTransformedWords = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
             if (Path.GetExtension(wTransformedWords).ToLower() != ".xml") {
                 Console.WriteLine("指定されたファイルはXMLファイルではありません。");
                 return;
@@ -72,7 +72,7 @@ namespace Chapter11_1_2 {
         /// <returns>変換後の要素</returns>
         static XElement TransformElements(XElement vOriginalElement) {
             if (vOriginalElement == null) return null;
-            return new XElement(vOriginalElement.Name, vOriginalElement.Elements().Select(x => new XAttribute(x?.Name ?? "不明", x?.Value ?? "不明")));
+            return new XElement(vOriginalElement.Name, vOriginalElement.Elements().Select(x => new XAttribute(x.Name , x.Value)));
         }
     }
 }

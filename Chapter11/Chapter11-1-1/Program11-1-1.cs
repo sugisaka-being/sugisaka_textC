@@ -44,7 +44,7 @@ namespace Chapter11_1_1 {
         static void Main(string[] args) {
             // 1.
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Sample11-1-1.xml");
-            var wSportsFile = Path.Combine("..", "..", Console.ReadLine());
+            var wSportsFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
             if (!File.Exists(wSportsFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return;
@@ -79,7 +79,7 @@ namespace Chapter11_1_1 {
             // 4.
             AddSportElement(wSportsDocument, "サッカー", "蹴球", 11, 1863);
             Console.WriteLine("新しい情報を保存するXMLファイルのファイル名を入力してください。例）NewSample11-1-1.xml");
-            wSportsFile = Path.Combine("..", "..", Console.ReadLine());
+            wSportsFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
             if (Path.GetExtension(wSportsFile).ToLower() != ".xml") {
                 Console.WriteLine("指定されたファイルはXMLファイルではありません。");
                 return;
@@ -91,6 +91,7 @@ namespace Chapter11_1_1 {
             }
             Console.WriteLine("指定されたファイルが保存されました。");
         }
+
         /// <summary>
         /// スポーツを追加するメソッド
         /// </summary>
