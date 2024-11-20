@@ -49,8 +49,8 @@ namespace Chapter12_1_1 {
                 wEmployeeSerializer.Serialize(wEmployeesWriter, wEmployeesQuestionOne);
             }
             if (!CheckFile(wInputFile)) return;
+            Console.WriteLine("指定されたファイルが出力されました。");
 
-            if (!CheckFile(wInputFile, ".xml")) return;
             using (var wEmployeesReader = XmlReader.Create(wInputFile)) {
                 var wEmployeeSerializer = new XmlSerializer(typeof(Employee[]));
                 var wReadEmployees = wEmployeeSerializer.Deserialize(wEmployeesReader) as Employee[];
@@ -72,14 +72,15 @@ namespace Chapter12_1_1 {
             };
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Employees12-1-1-2.xml");
             string wInputQuestionTwo = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            if (!CheckFile(wInputFile, ".xml")) return;
             using (var wEmployeeWriter = XmlWriter.Create(wInputQuestionTwo, wEmployeesSettings)) {
                 var wEmployeeSerializer = new DataContractSerializer(wEmployeesQuestionTwo.GetType());
                 wEmployeeSerializer.WriteObject(wEmployeeWriter, wEmployeesQuestionTwo);
             }
             if (!CheckFile(wInputQuestionTwo)) return;
+            Console.WriteLine("指定されたファイルが出力されました。");
 
             // 3.
-            if (!CheckFile(wInputQuestionTwo, ".xml")) return;
             using (var wEmployeesReader = XmlReader.Create(wInputQuestionTwo)) {
                 var wEmployeeSerializer = new DataContractSerializer(typeof(Employee[]));
                 var wReadEmployees = wEmployeeSerializer.ReadObject(wEmployeesReader) as Employee[];
@@ -96,6 +97,7 @@ namespace Chapter12_1_1 {
             // 4.
             Console.WriteLine("JSONファイルのファイル名を入力してください。例）Employees12-1-1-4.json");
             string wInputJSONFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            if (!CheckFile(wInputJSONFile, ".json")) return;
             using (var wEmploeesDataStream = new FileStream(wInputJSONFile, FileMode.Create, FileAccess.Write)) {
                 var wEmployeeSerializer = new DataContractJsonSerializer(wEmployeesQuestionFour.GetType());
                 wEmployeeSerializer.WriteObject(wEmploeesDataStream, wEmployeesQuestionFour);
@@ -113,6 +115,10 @@ namespace Chapter12_1_1 {
         static bool CheckFile(string vFile, string vExtension = null) {
             if (!File.Exists(vFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
+                if (vExtension != null && Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
+                    Console.WriteLine($"指定されたファイルは存在しませんが、拡張子{vExtension}と一致します。");
+                    return true;
+                }
                 return false;
             }
             if (vExtension != null && Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
