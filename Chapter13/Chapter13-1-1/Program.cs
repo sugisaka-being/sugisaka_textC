@@ -1,6 +1,8 @@
-﻿using Chapter13_1_1.Models;
-using System;
+﻿using System;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using Chapter13_1_1.Models;
 
 namespace Chapter13_1_1 {
     internal class Program {
@@ -78,11 +80,22 @@ namespace Chapter13_1_1 {
                     })
                     .ToList();
                 foreach (var wAuthorGroup in wAuthorGroups) {
-                    Console.WriteLine($"著者：{wAuthorGroup.Author.Name}　誕生日：{wAuthorGroup.Author.Birthday:yyyy年M月d日}　性別：{wAuthorGroup.Author.Gender}");
+                    Console.WriteLine($"著者：{wAuthorGroup.Author.Name}　誕生日：{wAuthorGroup.Author.Birthday.ToString("yyyy年MM月dd日")}　性別：{wAuthorGroup.Author.Gender}");
                     foreach (var wBook in wAuthorGroup.Books) {
                         Console.WriteLine($"　タイトル：{wBook.Title}　発行年　{wBook.PublishedYear}");
                     }
                 }
+
+                // 追加課題
+                // ①指定した書籍タイトルを削除するメソッドを追加してください。
+                // ②削除された書籍のログを、テキストファイルとして記録する仕組みも実装してみてください。
+                Console.WriteLine("削除された書籍のログを記録するテキストファイルのファイル名を入力してください。例）Sample13-1-1.txt");
+                var wInputFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+                if (!File.Exists(wInputFile)) {
+                    Console.WriteLine("指定されたファイルが存在しませんでした。");
+                    return;
+                }
+                RemoveBook("人間失格", wDataBase, wInputFile);
             }
         }
 
@@ -92,35 +105,70 @@ namespace Chapter13_1_1 {
         /// <param name="vName">名前</param>
         /// <param name="vBirthday">誕生日</param>
         /// <param name="vGender">性別</param>
-        static Author AddAuthor(string vName, DateTime vBirthday, string vGender, BooksDbContext vWDataBase) {
-            var wAuthor = vWDataBase.Authors.FirstOrDefault(x => x.Name == vName);
+        /// <param name="vDataBase">データベース</param>
+        static Author AddAuthor(string vName, DateTime vBirthday, string vGender, BooksDbContext vDataBase) {
+            var wAuthor = vDataBase.Authors.FirstOrDefault(x => x.Name == vName);
             if (wAuthor != null) return wAuthor;
             wAuthor = new Author {
                 Name = vName,
                 Birthday = vBirthday,
                 Gender = vGender,
             };
-            vWDataBase.Authors.Add(wAuthor);
-            vWDataBase.SaveChanges();
+            vDataBase.Authors.Add(wAuthor);
+            try {
+                vDataBase.SaveChanges();
+            } catch (Exception wEx) {
+                Console.WriteLine($"データベース保存時にエラーが発生しました: {wEx.Message}");
+                return null;
+            }
             return wAuthor;
         }
 
         /// <summary>
-        /// 本情報を追加するメソッド
+        /// 書籍情報を追加するメソッド
         /// </summary>
         /// <param name="vTitle">タイトル</param>
         /// <param name="vPublishedYear">発行年</param>
         /// <param name="vAuthor">著者</param>
-        static void AddBook(string vTitle, int vPublishedYear, Author vAuthor, BooksDbContext vWDataBase) {
-            var wExistingBook = vWDataBase.Books.FirstOrDefault(x => x.Title == vTitle && x.PublishedYear == vPublishedYear && x.Author.Id == vAuthor.Id);
+        /// <param name="vDataBase">データベース</param>
+        static void AddBook(string vTitle, int vPublishedYear, Author vAuthor, BooksDbContext vDataBase) {
+            var wExistingBook = vDataBase.Books.FirstOrDefault(x => x.Title == vTitle && x.PublishedYear == vPublishedYear && x.Author.Id == vAuthor.Id);
             if (wExistingBook != null) return;
             var wBook = new Book {
                 Title = vTitle,
                 PublishedYear = vPublishedYear,
                 Author = vAuthor,
             };
-            vWDataBase.Books.Add(wBook);
-            vWDataBase.SaveChanges();
+            vDataBase.Books.Add(wBook);
+            try {
+                vDataBase.SaveChanges();
+            } catch (Exception wEx) {
+                Console.WriteLine($"データベース保存時にエラーが発生しました: {wEx.Message}");
+                return ;
+            }
+        }
+
+        /// <summary>
+        /// 書籍情報を削除するメソッド
+        /// </summary>
+        /// <param name="vTitle">タイトル</param>
+        /// <param name="vDataBase">データベース</param>
+        /// <param name="vInputFile">ファイルパス（削除ログを記録するファイル）</param>
+        static void RemoveBook(string vTitle, BooksDbContext vDataBase, string vInputFile) {
+            var wExistingBook = vDataBase.Books.FirstOrDefault(x => x.Title == vTitle);
+            if (wExistingBook == null) {
+                Console.WriteLine($"指定された書籍「{vTitle}」が存在しませんでした");
+                return;
+            }
+            string wOutputLog = $"[{DateTime.Now:yyyy/MM/dd HH:mm:ss}]　書籍削除 ： タイトル - {wExistingBook.Title}　発行年 - {wExistingBook.PublishedYear}　著者 - {wExistingBook.Author.Name}";
+            vDataBase.Books.Remove(wExistingBook);
+            try {
+                vDataBase.SaveChanges();
+                File.AppendAllText(vInputFile, wOutputLog + Environment.NewLine);
+            } catch (Exception wEx) {
+                Console.WriteLine($"削除処理中にエラーが発生しました: {wEx.Message}");
+                return;
+            }
         }
     }
 }
