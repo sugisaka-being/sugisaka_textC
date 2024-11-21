@@ -42,13 +42,11 @@ namespace Chapter12_1_1 {
             // 1.
             Console.WriteLine("XMLファイルのファイル名を入力してください。例）Employees12-1-1-1.xml");
             string wInputFile = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
-            Console.WriteLine(wInputFile);
             if (!CheckFile(wInputFile, ".xml")) return;
             using (var wEmployeesWriter = XmlWriter.Create(wInputFile)) {
                 var wEmployeeSerializer = new XmlSerializer(wEmployeesQuestionOne.GetType());
                 wEmployeeSerializer.Serialize(wEmployeesWriter, wEmployeesQuestionOne);
             }
-            if (!CheckFile(wInputFile)) return;
             Console.WriteLine("指定されたファイルが出力されました。");
 
             using (var wEmployeesReader = XmlReader.Create(wInputFile)) {
@@ -77,7 +75,6 @@ namespace Chapter12_1_1 {
                 var wEmployeeSerializer = new DataContractSerializer(wEmployeesQuestionTwo.GetType());
                 wEmployeeSerializer.WriteObject(wEmployeeWriter, wEmployeesQuestionTwo);
             }
-            if (!CheckFile(wInputQuestionTwo)) return;
             Console.WriteLine("指定されたファイルが出力されました。");
 
             // 3.
@@ -102,7 +99,6 @@ namespace Chapter12_1_1 {
                 var wEmployeeSerializer = new DataContractJsonSerializer(wEmployeesQuestionFour.GetType());
                 wEmployeeSerializer.WriteObject(wEmploeesDataStream, wEmployeesQuestionFour);
             }
-            if (!CheckFile(wInputJSONFile)) return;
             Console.WriteLine("指定されたファイルが出力されました。");
         }
 
@@ -115,10 +111,6 @@ namespace Chapter12_1_1 {
         static bool CheckFile(string vFile, string vExtension = null) {
             if (!File.Exists(vFile)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
-                if (vExtension != null && Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
-                    Console.WriteLine($"指定されたファイルは存在しませんが、拡張子{vExtension}と一致します。");
-                    return true;
-                }
                 return false;
             }
             if (vExtension != null && Path.GetExtension(vFile).ToLower() != vExtension.ToLower()) {
