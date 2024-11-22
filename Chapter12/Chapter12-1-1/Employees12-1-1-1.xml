@@ -1,0 +1,1 @@
+﻿<?xml version="1.0" encoding="utf-8"?><ArrayOfEmployee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Employee><id>1</id><name>ああああ 太郎</name><hiredate>2001-01-01T00:00:00</hiredate></Employee><Employee><id>100</id><name>いいいい 花子</name><hiredate>2010-11-11T00:00:00</hiredate></Employee></ArrayOfEmployee>
