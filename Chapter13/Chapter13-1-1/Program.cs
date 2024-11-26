@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Chapter13_1_1.Models;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
-using Chapter13_1_1.Models;
 
 namespace Chapter13_1_1 {
     internal class Program {
@@ -38,27 +39,28 @@ namespace Chapter13_1_1 {
         */
         static void Main(string[] args) {
             using (var wDataBase = new BooksDbContext()) {
-                var wSosekiNatsume = AddAuthor("夏目漱石", new DateTime(1867, 2, 9), "男性", wDataBase);
-                AddBook("坊ちゃん", 2003, wSosekiNatsume, wDataBase);
-
-                var wOsamudazai = AddAuthor("太宰治", new DateTime(1909, 6, 19), "男性", wDataBase);
-                AddBook("人間失格", 1990, wOsamudazai, wDataBase);
-
-                var wAkikoYosano = AddAuthor("与謝野晶子", new DateTime(1878, 12, 7), "女性", wDataBase);
-                AddBook("みだれ髪", 2000, wAkikoYosano, wDataBase);
-
-                var wKenjiMiyazawa = AddAuthor("宮沢賢治", new DateTime(1896, 8, 27), "男性", wDataBase);
-                AddBook("銀河鉄道の夜", 1989, wKenjiMiyazawa, wDataBase);
-
+                var wAuthorsData = new List<Author> {
+                    new Author { Name = "夏目漱石", Birthday = new DateTime(1867, 2, 9), Gender = "男性" },
+                    new Author { Name = "太宰治", Birthday = new DateTime(1909, 6, 19), Gender = "男性" },
+                    new Author { Name = "与謝野晶子", Birthday = new DateTime(1878, 12, 7), Gender = "女性" },
+                    new Author { Name = "宮沢賢治", Birthday = new DateTime(1896, 8, 27), Gender = "男性" },
+                    new Author { Name = "菊池寛", Birthday = new DateTime(1888, 12, 26), Gender = "男性" },
+                    new Author { Name = "川端康成", Birthday = new DateTime(1899, 6, 14), Gender = "男性" },
+                };
+                var wBooksData = new List<Book> {
+                    new Book{ Title = "坊ちゃん", PublishedYear = 2003, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "夏目漱石") },
+                    new Book{ Title = "人間失格", PublishedYear = 1990, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "太宰治") },
+                    new Book{ Title = "みだれ髪", PublishedYear = 2000, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "与謝野晶子") },
+                    new Book{ Title = "銀河鉄道の夜", PublishedYear = 1989, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "宮沢賢治") },
+                    new Book{ Title = "こころ", PublishedYear = 1991, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "夏目漱石") },
+                    new Book{ Title = "伊豆の踊子", PublishedYear = 2003, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "川端康成") },
+                    new Book{ Title = "真珠夫人", PublishedYear = 2002, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "菊池寛") },
+                    new Book{ Title = "注文の多い料理店", PublishedYear = 2000, Author = wDataBase.Authors.FirstOrDefault(a => a.Name == "宮沢賢治") },
+                };
 
                 // 1.
-                var wHiroshiKikuchi = AddAuthor("菊池寛", new DateTime(1888, 12, 26), "男性", wDataBase);
-                var wYasunariKawabata = AddAuthor("川端康成", new DateTime(1899, 6, 14), "男性", wDataBase);
-
-                AddBook("こころ", 1991, wSosekiNatsume, wDataBase);
-                AddBook("伊豆の踊子", 2003, wYasunariKawabata, wDataBase);
-                AddBook("真珠夫人", 2002, wHiroshiKikuchi, wDataBase);
-                AddBook("注文の多い料理店", 2000, wKenjiMiyazawa, wDataBase);
+                AddAuthors(wAuthorsData, wDataBase);
+                AddBooks(wBooksData, wDataBase);
 
                 // 2.
                 // データが正しく追加されていることを確認いたしました。
@@ -95,56 +97,43 @@ namespace Chapter13_1_1 {
                     Console.WriteLine("指定されたファイルが存在しませんでした。");
                     return;
                 }
-                RemoveBook("人間失格", wDataBase, wInputFile);
+                RecordRemoveLog(RemoveBook("人間失格", wDataBase), wInputFile);
             }
         }
 
         /// <summary>
         /// 著者情報を追加するメソッド
         /// </summary>
-        /// <param name="vName">名前</param>
-        /// <param name="vBirthday">誕生日</param>
-        /// <param name="vGender">性別</param>
+        /// <param name="vAuthors">著者情報</param>
         /// <param name="vDataBase">データベース</param>
-        static Author AddAuthor(string vName, DateTime vBirthday, string vGender, BooksDbContext vDataBase) {
-            var wAuthor = vDataBase.Authors.FirstOrDefault(x => x.Name == vName);
-            if (wAuthor != null) return wAuthor;
-            wAuthor = new Author {
-                Name = vName,
-                Birthday = vBirthday,
-                Gender = vGender,
-            };
-            vDataBase.Authors.Add(wAuthor);
+        static void AddAuthors(IEnumerable<Author> vAuthors, BooksDbContext vDataBase) {
+            var wExistingAuthors = vDataBase.Authors.Select(x => x.Name).ToList();
+            var wNewAuthors = vAuthors.Where(x => !wExistingAuthors.Contains(x.Name)).ToList();
+            if (wNewAuthors == null) return;
+            vDataBase.Authors.AddRange(wNewAuthors);
             try {
                 vDataBase.SaveChanges();
             } catch (Exception wEx) {
                 Console.WriteLine($"データベース保存時にエラーが発生しました: {wEx.Message}");
-                return null;
+                return;
             }
-            return wAuthor;
         }
 
         /// <summary>
         /// 書籍情報を追加するメソッド
         /// </summary>
-        /// <param name="vTitle">タイトル</param>
-        /// <param name="vPublishedYear">発行年</param>
-        /// <param name="vAuthor">著者</param>
+        /// <param name="vBooks">書籍情報</param>
         /// <param name="vDataBase">データベース</param>
-        static void AddBook(string vTitle, int vPublishedYear, Author vAuthor, BooksDbContext vDataBase) {
-            var wExistingBook = vDataBase.Books.FirstOrDefault(x => x.Title == vTitle && x.PublishedYear == vPublishedYear && x.Author.Id == vAuthor.Id);
-            if (wExistingBook != null) return;
-            var wBook = new Book {
-                Title = vTitle,
-                PublishedYear = vPublishedYear,
-                Author = vAuthor,
-            };
-            vDataBase.Books.Add(wBook);
+        static void AddBooks(IEnumerable<Book> vBooks, BooksDbContext vDataBase) {
+            var wExistingBooks = vDataBase.Books.Select(x => new { x.Title, x.PublishedYear, AuthorId = x.Author.Id }).ToList();
+            var wNewBooks = vBooks.Where(x => !wExistingBooks.Any(y => y.Title == x.Title && y.PublishedYear == x.PublishedYear && y.AuthorId == x.Author.Id)).ToList();
+            if (wNewBooks == null) return;
+            vDataBase.Books.AddRange(wNewBooks);
             try {
                 vDataBase.SaveChanges();
             } catch (Exception wEx) {
                 Console.WriteLine($"データベース保存時にエラーが発生しました: {wEx.Message}");
-                return ;
+                return;
             }
         }
 
@@ -153,18 +142,32 @@ namespace Chapter13_1_1 {
         /// </summary>
         /// <param name="vTitle">タイトル</param>
         /// <param name="vDataBase">データベース</param>
-        /// <param name="vInputFile">ファイルパス（削除ログを記録するファイル）</param>
-        static void RemoveBook(string vTitle, BooksDbContext vDataBase, string vInputFile) {
+        /// <returns>削除ログ</returns>
+        static string RemoveBook(string vTitle, BooksDbContext vDataBase) {
             var wExistingBook = vDataBase.Books.FirstOrDefault(x => x.Title == vTitle);
             if (wExistingBook == null) {
                 Console.WriteLine($"指定された書籍「{vTitle}」が存在しませんでした");
-                return;
+                return null;
             }
             string wOutputLog = $"[{DateTime.Now:yyyy/MM/dd HH:mm:ss}]　書籍削除 ： タイトル - {wExistingBook.Title}　発行年 - {wExistingBook.PublishedYear}　著者 - {wExistingBook.Author.Name}";
             vDataBase.Books.Remove(wExistingBook);
             try {
                 vDataBase.SaveChanges();
-                File.AppendAllText(vInputFile, wOutputLog + Environment.NewLine);
+                return wOutputLog;
+            } catch (Exception wEx) {
+                Console.WriteLine($"削除処理中にエラーが発生しました: {wEx.Message}");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 書籍の削除ログを記録するメソッド
+        /// </summary>
+        /// <param name="vOutputLog">削除ログ</param>
+        /// <param name="vInputFile">ファイルパス（削除ログを記録するファイル）</param>
+        static void RecordRemoveLog(string vOutputLog, string vInputFile) {
+            try {
+                File.AppendAllText(vInputFile, vOutputLog + Environment.NewLine);
             } catch (Exception wEx) {
                 Console.WriteLine($"削除処理中にエラーが発生しました: {wEx.Message}");
                 return;
