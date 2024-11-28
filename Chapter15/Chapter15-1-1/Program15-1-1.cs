@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Chapter15_1_1 {
@@ -40,20 +41,18 @@ namespace Chapter15_1_1 {
             Console.WriteLine(Environment.NewLine);
 
             // 3.
-            var wPublishedYearGroups = Library.Books.GroupBy(x => x.PublishedYear).OrderBy(x => x.Key);
-            foreach (var wPublishedYearGroup in wPublishedYearGroups) {
+            foreach (var wPublishedYearGroup in Library.Books.GroupBy(x => x.PublishedYear).OrderBy(x => x.Key)) {
                 Console.WriteLine($"{wPublishedYearGroup.Key}年　{wPublishedYearGroup.Count()}冊");
             }
             Console.WriteLine(Environment.NewLine);
 
             // 4.
-            var wSortBooks = Library.Books.OrderByDescending(x => x.PublishedYear).ThenByDescending(x => x.Price);
-            foreach (var wSortBook in wSortBooks) Console.WriteLine(wSortBook);
+            foreach (var wSortBook in Library.Books.OrderByDescending(x => x.PublishedYear).ThenByDescending(x => x.Price)) Console.WriteLine(wSortBook);
             Console.WriteLine(Environment.NewLine);
 
             // 5.
             var wSpecifyYear = 2016;
-            var wBookCategories = Library.Books
+            IEnumerable<string> wBookCategories = Library.Books
                 .Where(x => x.PublishedYear == wSpecifyYear)
                 .Join(Library.Categories,
                 x => x.CategoryId,
