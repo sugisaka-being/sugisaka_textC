@@ -9,6 +9,11 @@ namespace Chapter14_1_6 {
             var wTokyoTime = new DateTimeOffset(2020, 8, 10, 16, 32, 20, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time").BaseUtcOffset);
             Console.WriteLine($"協定世界時：{wTokyoTime.ToUniversalTime()}");
             Console.WriteLine($"シンガポール：{TimeZoneInfo.ConvertTimeBySystemTimeZoneId(wTokyoTime, "Singapore Standard Time")}");
+
+            // 追加課題
+            var wNowJapanTime = new DateTimeOffset(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time").BaseUtcOffset);
+            Console.WriteLine($"協定世界時：{wNowJapanTime.ToUniversalTime()}");
+            Console.WriteLine($"シンガポール：{TimeZoneInfo.ConvertTimeBySystemTimeZoneId(wNowJapanTime, "Singapore Standard Time")}");
         }
     }
 }

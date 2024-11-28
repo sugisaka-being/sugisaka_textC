@@ -8,31 +8,24 @@ namespace Chapter14_1_5 {
         　　指定されたZIPファイルから、拡張子が.txtのファイルだけを抽出するコンソールアプリケーションを作成してください。
         　　ZIPファイルと出力先フォルダは以下に示すようにパラメータで指定します。
         　　第１パラメータがZIPファイルのパス、第２パラメータが出力先フォルダです。
-        　　"unziptxt.exe d:\temp\sample.zip d\work"
         　　出力先フォルダが存在しない場合は新たに作成してください。
         */
         static void Main(string[] args) {
             if (args.Length != 2) {
-                Console.WriteLine("コマンドライン引数を適切に利用してください。例）..\\..\\Sample.zip ..\\..\\Sample14-1-5");
+                Console.WriteLine("コマンドライン引数の数が不正です。2つにしてください。例）..\\..\\Sample.zip ..\\..\\Sample14-1-5");
                 return;
             }
-            var wZipFile = args[0];
-            var wOutputFolder = args[1];
-            if (!File.Exists(wZipFile)) {
-                Console.WriteLine("指定されたzipファイルが存在しませんでした。");
-                return;
-            }
-            if (!Directory.Exists(wOutputFolder)) Directory.CreateDirectory(wOutputFolder);
+            var wZipFilePath = args[0];
+            var wOutputFolderPath = args[1];
+            if (!IsFileWithExtension(wZipFilePath, ".zip")) return;
 
             try {
-                using (ZipArchive wZipArchive = ZipFile.OpenRead(wZipFile)) {
-                    foreach (var wEntry in wZipArchive.Entries) {
+                using (ZipArchive wZipArchive = ZipFile.OpenRead(wZipFilePath)) {
+                    foreach (ZipArchiveEntry wEntry in wZipArchive.Entries) {
                         if (Path.GetExtension(wEntry.FullName).ToLower() == ".txt") {
-                            var wDestinationPath = Path.Combine(wOutputFolder, wEntry.FullName);
+                            var wDestinationPath = Path.Combine(wOutputFolderPath, wEntry.FullName);
                             string wDirectoryPath = Path.GetDirectoryName(wDestinationPath);
-                            if (!Directory.Exists(wDirectoryPath)) {
-                                Directory.CreateDirectory(wDirectoryPath);
-                            }
+                            Directory.CreateDirectory(wDirectoryPath);
                             wEntry.ExtractToFile(wDestinationPath, overwrite: true);
                         }
                     }
@@ -41,6 +34,22 @@ namespace Chapter14_1_5 {
             } catch (Exception wEx) {
                 Console.WriteLine($"エラーが発生しました {wEx.Message}");
             }
+        }
+
+        /// <summary>
+        /// 指定されたファイルの存在と拡張子をチェックするメソッド
+        /// </summary>
+        /// <param name="vFilePath">ファイルパス</param>
+        static bool IsFileWithExtension(string vFilePath, string vFileExtension) {
+            if (!File.Exists(vFilePath)) {
+                Console.WriteLine("指定されたファイルが存在しませんでした。");
+                return false;
+            }
+            if (Path.GetExtension(vFilePath).ToLower() != vFileExtension) {
+                Console.WriteLine($"指定されたファイルは{vFileExtension}拡張子のファイルではありません。");
+                return false;
+            }
+            return true;
         }
     }
 }

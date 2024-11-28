@@ -9,9 +9,9 @@ namespace Chapter14_1_2 {
         */
         static void Main(string[] args) {
             var wFileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-            Console.WriteLine($"ファイルバージョン：{wFileVersion.FileMajorPart} {wFileVersion.FileMinorPart} {wFileVersion.FileBuildPart} {wFileVersion.FilePrivatePart}");
-            var wAssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            Console.WriteLine($"アセンブリバージョン：{wAssemblyVersion.Major} {wAssemblyVersion.Minor} {wAssemblyVersion.Build} {wAssemblyVersion.Revision}");
+            Console.WriteLine($"ファイルバージョン：{wFileVersion.FileMajorPart}.{wFileVersion.FileMinorPart}.{wFileVersion.FileBuildPart}.{wFileVersion.FilePrivatePart}");
+            Version wAssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            Console.WriteLine($"アセンブリバージョン：{wAssemblyVersion}");
         }
     }
 }

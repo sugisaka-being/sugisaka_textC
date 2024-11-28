@@ -11,7 +11,12 @@ namespace Chapter14_1_3 {
         　　                MondayIsFirstDay="True" />
         */
         static void Main(string[] args) {
-            var wCalendarOption = (ConfigurationManager.GetSection("myAppSettings") as MyAppSettings).CalendarOption;
+            var wMyAppSettings = ConfigurationManager.GetSection("myAppSettings") as MyAppSettings;
+            if (wMyAppSettings == null) {
+                Console.WriteLine("MyAppSettings型へのキャストに失敗しました。");
+                return;
+            }
+            var wCalendarOption = wMyAppSettings.CalendarOption;
             Console.WriteLine(wCalendarOption.StringFormat);
             Console.WriteLine(wCalendarOption.Minimum);
             Console.WriteLine(wCalendarOption.Maximum);

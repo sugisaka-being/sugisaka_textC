@@ -11,26 +11,25 @@ namespace Chapter14_1_1 {
         　　入力するファイルの形式は、通常のテキストファイルでもXMLファイルでも、好みの形式でかまいません。
         */
         static void Main(string[] args) {
-            Console.WriteLine("読み込むファイルのファイル名を入力してください。例）Sample14-1-1.txt");
-            var wInputFile = Console.ReadLine();
-            if (!File.Exists(wInputFile)) {
+            Console.WriteLine("読み込むファイルのファイルパスを入力してください。例）Sample14-1-1.txt");
+            var wInputFilePath = Path.Combine(Environment.CurrentDirectory, Console.ReadLine());
+            if (!File.Exists(wInputFilePath)) {
                 Console.WriteLine("指定されたファイルが存在しません。");
                 return;
             }
-            var wInputLines = File.ReadAllLines(wInputFile);
-            foreach (var wInputLine in wInputLines) {
+            foreach (var wInputLine in File.ReadAllLines(wInputFilePath)) {
                 if (string.IsNullOrWhiteSpace(wInputLine)) continue;
-                var wLineParts = wInputLine.Split(new char[] { ' ' }, 2); ;
-                var wProcessStartInfomation = new ProcessStartInfo {
-                    FileName = wLineParts[0],
-                    Arguments = wLineParts.Length >= 2 ? wLineParts[1] : null,
+                string[] wProgramAndParamsInfo = wInputLine.Split(new char[] { ' ' }, 2);
+                var wProcessStartInfo = new ProcessStartInfo {
+                    FileName = wProgramAndParamsInfo[0],
+                    Arguments = wProgramAndParamsInfo.Length >= 2 ? wProgramAndParamsInfo[1] : null,
                 };
-                Console.WriteLine($"起動中:{wProcessStartInfomation.FileName} {wProcessStartInfomation.Arguments}");
+                Console.WriteLine($"起動中:{wProcessStartInfo.FileName} {wProcessStartInfo.Arguments}");
                 try {
-                    using (var wProcess = Process.Start(wProcessStartInfomation)) {
+                    using (var wProcess = Process.Start(wProcessStartInfo)) {
                         wProcess.WaitForExit();
                     }
-                    Console.WriteLine($"{wProcessStartInfomation.FileName}が終了しました。");
+                    Console.WriteLine($"{wProcessStartInfo.FileName}が終了しました。");
                 } catch (Exception wEx) {
                     Console.WriteLine($"プログラム実行時にエラーが発生しました {wEx.Message}");
                 }
