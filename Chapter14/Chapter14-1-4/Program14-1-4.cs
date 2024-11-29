@@ -11,7 +11,7 @@ namespace Chapter14_1_4 {
         static async Task Main(string[] args) {
             Console.WriteLine("保存先のHTMLファイルパスを入力してください。例）Sample14-1-4.html");
             var wHttpClient = new HttpClient();
-            File.WriteAllBytes(Console.ReadLine(), await wHttpClient.GetByteArrayAsync("https://www.beingcorp.co.jp/"));
+            File.WriteAllText(Console.ReadLine(), await wHttpClient.GetStringAsync("https://www.beingcorp.co.jp/"));
         }
     }
 }
