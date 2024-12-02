@@ -17,7 +17,7 @@ namespace Chapter14_1_5 {
             }
             var wZipFilePath = args[0];
             var wOutputFolderPath = args[1];
-            if (!IsFileWithExtension(wZipFilePath, ".zip")) return;
+            if (!ExistsFileWithExtension(wZipFilePath, ".zip")) return;
 
             try {
                 using (ZipArchive wZipArchive = ZipFile.OpenRead(wZipFilePath)) {
@@ -40,7 +40,9 @@ namespace Chapter14_1_5 {
         /// 指定されたファイルの存在と拡張子をチェックするメソッド
         /// </summary>
         /// <param name="vFilePath">ファイルパス</param>
-        static bool IsFileWithExtension(string vFilePath, string vFileExtension) {
+        /// <param name="vFileExtension">拡張子</param>
+        /// <returns></returns>
+        static bool ExistsFileWithExtension(string vFilePath, string vFileExtension) {
             if (!File.Exists(vFilePath)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
                 return false;
