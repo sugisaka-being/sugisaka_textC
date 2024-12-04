@@ -23,7 +23,7 @@ namespace Chapter15_1_1 {
         　　2016年に発行された書籍のカテゴリ一覧を取得し、コンソールに出力してください。
 
         　　6.
-        　　GroupByメソッドと使い、カテゴリごとに書籍を分類しカテゴリ名をアルファベット順に並び替え、
+        　　GroupByメソッドを使い、カテゴリごとに書籍を分類しカテゴリ名をアルファベット順に並び替え、
         　　その結果をコンソールに出力してください。
 
         　　7.
@@ -33,93 +33,93 @@ namespace Chapter15_1_1 {
         　　GroupJoinメソッドを使って4冊以上発行されているカテゴリ名を求め、そのカテゴリ名をコンソールに出力してください。
         */
         static void Main(string[] args) {
+            var wLibraryBooks = Library.Books.ToList();
+            if (wLibraryBooks == null) {
+                Console.WriteLine("書籍のリストにデータが存在しません。データを追加してください。");
+                return;
+            }
+
             // 2.
-            var wMaxPrice = Library.Books.Max(x => x.Price);
-            foreach (var wMaxPriceBook in Library.Books.Where(x => x.Price == wMaxPrice)) {
+            int wMaxPrice = wLibraryBooks.Max(x => x.Price);
+            foreach (var wMaxPriceBook in wLibraryBooks.Where(x => x.Price == wMaxPrice)) {
                 Console.WriteLine(wMaxPriceBook);
             }
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             // 3.
-            foreach (var wPublishedYearGroup in Library.Books.GroupBy(x => x.PublishedYear).OrderBy(x => x.Key)) {
+            foreach (var wPublishedYearGroup in wLibraryBooks.GroupBy(x => x.PublishedYear).OrderBy(x => x.Key)) {
                 Console.WriteLine($"{wPublishedYearGroup.Key}年　{wPublishedYearGroup.Count()}冊");
             }
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             // 4.
-            foreach (var wSortBook in Library.Books.OrderByDescending(x => x.PublishedYear).ThenByDescending(x => x.Price)) Console.WriteLine(wSortBook);
-            Console.WriteLine(Environment.NewLine);
+            foreach (var wSortBook in wLibraryBooks.OrderByDescending(x => x.PublishedYear).ThenByDescending(x => x.Price)) {
+                Console.WriteLine(wSortBook);
+            }
+            Console.WriteLine();
 
             // 5.
             var wSpecifyYear = 2016;
-            IEnumerable<string> wBookCategories = Library.Books
-                .Where(x => x.PublishedYear == wSpecifyYear)
+            IEnumerable<string> wBookCategories = wLibraryBooks
+                .Where(vBook => vBook.PublishedYear == wSpecifyYear)
                 .Join(Library.Categories,
-                x => x.CategoryId,
-                y => y.Id,
-                (x, y) => y.Name)
+                    vBook => vBook.CategoryId,
+                    vCategory => vCategory.Id,
+                    (vBook, vCategory) => vCategory.Name)
                 .Distinct();
             foreach (var wBookCategory in wBookCategories) {
                 Console.WriteLine(wBookCategory);
             }
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             // 6.
-            var wCategorizedBooks = Library.Books
+            var wBooksWithCategories = wLibraryBooks
                 .Join(Library.Categories,
-                x => x.CategoryId,
-                y => y.Id,
-                (x, y) => new {
-                    Category = y.Name,
-                    Title = x.Title,
-                    Price = x.Price,
-                    PublishedYear = x.PublishedYear,
-                })
+                    vBook => vBook.CategoryId,
+                    vCategory => vCategory.Id,
+                    (vBook, vCategory) => new {
+                        Category = vCategory.Name,
+                        Title = vBook.Title,
+                        Price = vBook.Price,
+                        PublishedYear = vBook.PublishedYear,
+                    });
+            var wGroupedAndSortedBooks = wBooksWithCategories
                 .GroupBy(x => x.Category)
-                .OrderBy(x => x.Key);
-            foreach (var wCategorys in wCategorizedBooks) {
-                Console.WriteLine($"カテゴリ名：{wCategorys.Key}");
-                foreach (var wBook in wCategorys) {
+                .OrderBy(x => x.Key)
+                .ToList();
+            foreach (var wCategories in wGroupedAndSortedBooks) {
+                Console.WriteLine($"カテゴリ名：{wCategories.Key}");
+                foreach (var wBook in wCategories) {
                     Console.WriteLine($"　タイトル：{wBook.Title}, 価格：{wBook.Price}, 発行年：{wBook.PublishedYear}");
                 }
             }
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             // 7.
             var wSpecifyCategory = "Development";
-            var wDevelopmentBooks = Library.Books
-                .Join(Library.Categories,
-                x => x.CategoryId,
-                y => y.Id,
-                (x, y) => new {
-                    Category = y.Name,
-                    Title = x.Title,
-                    Price = x.Price,
-                    PublishedYear = x.PublishedYear,
-                })
+            var wBooksByYearInCategory = wBooksWithCategories
                 .Where(x => x.Category == wSpecifyCategory)
                 .GroupBy(x => x.PublishedYear);
-            foreach (var wBooksByYear in wDevelopmentBooks) {
+            foreach (var wBooksByYear in wBooksByYearInCategory) {
                 Console.WriteLine($"発行年：{wBooksByYear.Key}");
                 foreach (var wBook in wBooksByYear) {
                     Console.WriteLine($"　タイトル：{wBook.Title}, 価格：{wBook.Price}");
                 }
             }
-            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine();
 
             // 8.
             var wNumberBooks = 4;
-            var wCategoriesWithFourMoreBooks = Library.Categories
-                .GroupJoin(Library.Books,
-                x => x.Id,
-                y => y.CategoryId,
-                (x, z) => new {
-                    Category = x.Name,
-                    Count = z.Count()
-                })
-                .Where(x => x.Count >= wNumberBooks);
-            foreach (var wCategoryWithFourMoreBooks in wCategoriesWithFourMoreBooks) {
-                Console.WriteLine($"カテゴリ名：{wCategoryWithFourMoreBooks.Category}（{wCategoryWithFourMoreBooks.Count}冊)");
+            var wCategoriesWithBooks = Library.Categories
+                .GroupJoin(wLibraryBooks,
+                    vCategory => vCategory.Id,
+                    vBook => vBook.CategoryId,
+                    (vCategory, vBook) => new {
+                        Category = vCategory.Name,
+                        Books = vBook
+                    });
+            foreach (var wCategoryWithFourMoreBooks in wCategoriesWithBooks.Where(x => x.Books.Count() >= wNumberBooks)) {
+                Console.WriteLine($"カテゴリ名：{wCategoryWithFourMoreBooks.Category}（{wCategoryWithFourMoreBooks.Books}冊)");
             }
         }
     }
