@@ -28,8 +28,7 @@ namespace Chapter14_1_1 {
                         wProcess.WaitForExit();
                     }
                     Console.WriteLine($"{wProcessStartInfo.FileName}が終了しました。");
-                }
-                catch (Exception wEx) {
+                } catch (Exception wEx) {
                     Console.WriteLine($"プログラム実行時にエラーが発生しました {wEx.Message}");
                 }
             }

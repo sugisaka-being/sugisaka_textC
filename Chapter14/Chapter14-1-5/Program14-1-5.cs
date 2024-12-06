@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 namespace Chapter14_1_5 {
     internal class Program {
@@ -21,13 +22,11 @@ namespace Chapter14_1_5 {
 
             try {
                 using (ZipArchive wZipArchive = ZipFile.OpenRead(wZipFilePath)) {
-                    foreach (ZipArchiveEntry wEntry in wZipArchive.Entries) {
-                        if (Path.GetExtension(wEntry.FullName).ToLower() == ".txt") {
-                            var wDestinationPath = Path.Combine(wOutputFolderPath, wEntry.FullName);
-                            string wDirectoryPath = Path.GetDirectoryName(wDestinationPath);
-                            Directory.CreateDirectory(wDirectoryPath);
-                            wEntry.ExtractToFile(wDestinationPath, overwrite: true);
-                        }
+                    foreach (ZipArchiveEntry wEntry in wZipArchive.Entries.Where(x => Path.GetExtension(x.FullName).ToLower() == ".txt")) {
+                        var wDestinationPath = Path.Combine(wOutputFolderPath, wEntry.FullName);
+                        string wDirectoryPath = Path.GetDirectoryName(wDestinationPath);
+                        Directory.CreateDirectory(wDirectoryPath);
+                        wEntry.ExtractToFile(wDestinationPath, overwrite: true);
                     }
                     Console.WriteLine("全ての.txtファイルを抽出しました。");
                 }
@@ -41,7 +40,7 @@ namespace Chapter14_1_5 {
         /// </summary>
         /// <param name="vFilePath">ファイルパス</param>
         /// <param name="vFileExtension">拡張子</param>
-        /// <returns></returns>
+        /// <returns>ファイルが指定された拡張子で存在する場合にtrueを返す</returns>
         static bool ExistsFileWithExtension(string vFilePath, string vFileExtension) {
             if (!File.Exists(vFilePath)) {
                 Console.WriteLine("指定されたファイルが存在しませんでした。");
