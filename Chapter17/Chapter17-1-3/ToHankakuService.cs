@@ -26,7 +26,7 @@ namespace Chapter17_1_3 {
         /// 処理が完了したことを知らせるメソッド
         /// </summary>
         public void Terminate() {
-            Console.WriteLine("すべての処理処理が完了しました");
+            Console.WriteLine("すべての処理が完了しました");
         }
     }
 }

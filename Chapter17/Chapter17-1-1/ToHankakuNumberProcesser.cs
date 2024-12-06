@@ -19,7 +19,7 @@ namespace Chapter17_1_1 {
         /// 処理が完了したことを知らせるメソッド
         /// </summary>
         protected override void Terminate() {
-            Console.WriteLine("すべての処理処理が完了しました");
+            Console.WriteLine("すべての処理が完了しました");
         }
     }
 }
