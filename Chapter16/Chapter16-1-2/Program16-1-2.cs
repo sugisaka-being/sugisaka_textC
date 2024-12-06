@@ -49,17 +49,13 @@ namespace Chapter16_1_2 {
                 if (wCsFileContents.Contains("async") && wCsFileContents.Contains("await")) {
                     Console.WriteLine(Path.GetFullPath(vCsFile));
                 }
-            }
-            catch (UnauthorizedAccessException wEx) {
+            } catch (UnauthorizedAccessException wEx) {
                 Console.WriteLine($"ファイルへのアクセスが拒否されました：{wEx.Message}");
-            }
-            catch (PathTooLongException wEx) {
+            } catch (PathTooLongException wEx) {
                 Console.WriteLine($"ファイルパスが長すぎます：{wEx.Message}");
-            }
-            catch (OutOfMemoryException wEx) {
+            } catch (OutOfMemoryException wEx) {
                 Console.WriteLine($"メモリが不足しています：{wEx.Message}");
-            }
-            catch (Exception wEx) {
+            } catch (Exception wEx) {
                 Console.WriteLine($"エラーが発生しました：{wEx.Message}");
             }
         }
