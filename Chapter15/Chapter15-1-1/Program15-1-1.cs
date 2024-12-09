@@ -34,7 +34,7 @@ namespace Chapter15_1_1 {
         */
         static void Main(string[] args) {
             var wLibraryBooks = Library.Books.ToList();
-            if (wLibraryBooks == null) {
+            if (wLibraryBooks == null || !wLibraryBooks.Any()) {
                 Console.WriteLine("書籍のリストにデータが存在しません。データを追加してください。");
                 return;
             }
@@ -83,11 +83,7 @@ namespace Chapter15_1_1 {
                         Price = vBook.Price,
                         PublishedYear = vBook.PublishedYear,
                     });
-            var wGroupedAndSortedBooks = wBooksWithCategories
-                .GroupBy(x => x.Category)
-                .OrderBy(x => x.Key)
-                .ToList();
-            foreach (var wCategories in wGroupedAndSortedBooks) {
+            foreach (var wCategories in wBooksWithCategories.GroupBy(x => x.Category).OrderBy(x => x.Key)) {
                 Console.WriteLine($"カテゴリ名：{wCategories.Key}");
                 foreach (var wBook in wCategories) {
                     Console.WriteLine($"　タイトル：{wBook.Title}, 価格：{wBook.Price}, 発行年：{wBook.PublishedYear}");
@@ -97,10 +93,7 @@ namespace Chapter15_1_1 {
 
             // 7.
             var wSpecifyCategory = "Development";
-            var wBooksByYearInCategory = wBooksWithCategories
-                .Where(x => x.Category == wSpecifyCategory)
-                .GroupBy(x => x.PublishedYear);
-            foreach (var wBooksByYear in wBooksByYearInCategory) {
+            foreach (var wBooksByYear in wBooksWithCategories.Where(x => x.Category == wSpecifyCategory).GroupBy(x => x.PublishedYear)) {
                 Console.WriteLine($"発行年：{wBooksByYear.Key}");
                 foreach (var wBook in wBooksByYear) {
                     Console.WriteLine($"　タイトル：{wBook.Title}, 価格：{wBook.Price}");
@@ -118,8 +111,8 @@ namespace Chapter15_1_1 {
                         Category = vCategory.Name,
                         Books = vBook
                     });
-            foreach (var wCategoryWithFourMoreBooks in wCategoriesWithBooks.Where(x => x.Books.Count() >= wNumberBooks)) {
-                Console.WriteLine($"カテゴリ名：{wCategoryWithFourMoreBooks.Category}（{wCategoryWithFourMoreBooks.Books}冊)");
+            foreach (var wCategoryWithBooks in wCategoriesWithBooks.Where(x => x.Books.ToList().Count >= wNumberBooks)) {
+                Console.WriteLine($"カテゴリ名：{wCategoryWithBooks.Category}（{wCategoryWithBooks.Books.Count()}冊)");
             }
         }
     }
