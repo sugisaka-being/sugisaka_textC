@@ -109,10 +109,10 @@ namespace Chapter15_1_1 {
                     vBook => vBook.CategoryId,
                     (vCategory, vBook) => new {
                         Category = vCategory.Name,
-                        Books = vBook
+                        Books = vBook.ToList()
                     });
-            foreach (var wCategoryWithBooks in wCategoriesWithBooks.Where(x => x.Books.ToList().Count >= wNumberBooks)) {
-                Console.WriteLine($"カテゴリ名：{wCategoryWithBooks.Category}（{wCategoryWithBooks.Books.Count()}冊)");
+            foreach (var wCategoryWithBooks in wCategoriesWithBooks.Where(x => x.Books.Count >= wNumberBooks)) {
+                Console.WriteLine($"カテゴリ名：{wCategoryWithBooks.Category}（{wCategoryWithBooks.Books.Count}冊)");
             }
         }
     }
