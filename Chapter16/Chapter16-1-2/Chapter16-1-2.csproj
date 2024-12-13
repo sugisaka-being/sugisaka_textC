@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SequentialFileProcessor.cs" />
     <Compile Include="Program16-1-2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ParallelFileProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

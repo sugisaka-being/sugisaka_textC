@@ -16,10 +16,8 @@ namespace Chapter16_1_1 {
             if (!ExistsFileWithExtension(wInputTextFilePath, ".txt")) return;
             var wStringBuilder = new StringBuilder();
             using (var wStreamReader = new StreamReader(wInputTextFilePath)) {
-                var wInputTextLine = await wStreamReader.ReadLineAsync();
-                while (wInputTextLine != null) {
-                    wStringBuilder.AppendLine(wInputTextLine);
-                    wInputTextLine = await wStreamReader.ReadLineAsync();
+                while (!wStreamReader.EndOfStream) {
+                    wStringBuilder.AppendLine(await wStreamReader.ReadLineAsync());
                 }
             }
             Console.WriteLine(wStringBuilder);
