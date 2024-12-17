@@ -32,6 +32,6 @@
         /// </summary>
         /// <param name="vFeet">変換対象の値</param>
         /// <returns>変換されたメートルの値</returns>
-        public double ToMeter(double vFeet) => vFeet * this.Ratio;
+        public double ToMeter(double vDistanceValue) => vDistanceValue * this.Ratio;
     }
 }

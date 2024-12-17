@@ -21,17 +21,11 @@ namespace Chapter17_1_2 {
         /// <param name="vFromConvert">変換元の単位コンバーター</param>
         /// <returns>入力された距離の値を返す</returns>
         static double GetDistance(ConverterBase vFromConvert) {
-            double wDistanceValue = double.NaN;
-            bool wIsValid = false;
-            while (!wIsValid) {
+            while (true) {
                 Console.Write($"変換したい距離(単位:{vFromConvert.UnitName})を入力してください　例)100 => ");
-                if (!double.TryParse(Console.ReadLine(), out wDistanceValue)) {
-                    Console.WriteLine($"入力された距離は無効です。例を参考に再度入力し直してください");
-                } else {
-                    wIsValid = true;
-                }
+                if (double.TryParse(Console.ReadLine(), out double wDistanceValue)) return wDistanceValue;
+                Console.WriteLine($"入力された距離は無効です。例を参考に再度入力し直してください");
             }
-            return wDistanceValue;
         }
 
         /// <summary>
@@ -40,13 +34,12 @@ namespace Chapter17_1_2 {
         /// <param name="vOutputMessage">ユーザーに表示するメッセージ</param>
         /// <returns>入力された単位に対応するコンバーターを返す</returns>
         static ConverterBase GetConverter(string vOutputMessage) {
-            ConverterBase wConverter = null;
-            Console.Write(vOutputMessage + " => ");
-            while ((wConverter = ConverterFactory.GetInstance(Console.ReadLine())) == null) {
-                Console.WriteLine($"入力された単位は無効です。例を参考に再度入力し直してください");
+            while (true) {
+                ConverterBase wConverter;
                 Console.Write(vOutputMessage + " => ");
+                if ((wConverter = ConverterFactory.GetInstance(Console.ReadLine())) != null) return wConverter;
+                Console.WriteLine($"入力された単位は無効です。例を参考に再度入力し直してください");
             }
-            return wConverter;
         }
     }
 }
