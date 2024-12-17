@@ -9,8 +9,7 @@ namespace Chapter17_1_3 {
         /// <summary>
         /// ファイル処理の準備をするメソッド
         /// </summary>
-        /// <param name="vFileFath"></param>
-        public void Initialize(string vFileFath) {
+        public void Initialize(string vFilePath) {
         }
 
         /// <summary>

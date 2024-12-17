@@ -7,7 +7,7 @@ namespace Chapter17_1_3 {
         　　問題17-1-1で作成したプログラムをテキストで示した構造に合うように書き換えてください。（テキストp.430）
         */
         static void Main(string[] args) {
-            Console.WriteLine("読み込むファイルの絶対パスを入力してください。例）\"C:\\Users\\Documents\\Sample17-1-3.txt\"");
+            Console.WriteLine("読み込むファイルの絶対パスを入力してください。例）C:\\Users\\Documents\\Sample17-1-3.txt");
             var wInputFilePath = Console.ReadLine();
             if (!ExistsFileWithExtension(wInputFilePath, ".txt")) return;
             var wTextFileProcessor = new TextFileProcessor(new ToHankakuService());

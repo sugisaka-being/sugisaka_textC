@@ -8,10 +8,10 @@ namespace Chapter17_1_1 {
         　　置き換えた結果をコンソールに出力するプログラムを作ってください。
         */
         static void Main(string[] args) {
-            Console.WriteLine("読み込むファイルの絶対パスを入力してください。例）\"C:\\Users\\Documents\\Sample17-1-1.txt\"");
+            Console.WriteLine("読み込むファイルの絶対パスを入力してください。例）C:\\Users\\Documents\\Sample17-1-1.txt");
             var wInputFilePath = Console.ReadLine();
             if (!ExistsFileWithExtension(wInputFilePath, ".txt")) return;
-            TextProcessor.Run<ToHankakuNumberProcesser>(wInputFilePath);
+            TextProcessor.Run<ToHankakuNumberProcessor>(wInputFilePath);
         }
 
         /// <summary>

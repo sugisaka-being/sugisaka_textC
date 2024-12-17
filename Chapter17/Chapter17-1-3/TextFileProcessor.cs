@@ -15,7 +15,7 @@ namespace Chapter17_1_3 {
         /// </summary>
         /// <param name="vService">ファイル処理を実行するサービス</param>
         public TextFileProcessor(ITextFileService vService) {
-            this.FService = vService;
+            FService = vService;
         }
 
         /// <summary>

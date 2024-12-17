@@ -5,7 +5,12 @@ namespace Chapter17_1_1 {
     /// <summary>
     /// 全角数字を半角数字に変換するテキスト処理クラス（親クラス：TextProcessor）
     /// </summary>
-    internal class ToHankakuNumberProcesser : TextProcessor {
+    internal class ToHankakuNumberProcessor : TextProcessor {
+        /// <summary>
+        /// ファイル処理の準備を行うメソッド
+        /// </summary>
+        protected override void Initialize(string vFilePath) { }
+
         /// <summary>
         /// 全角数字を半角数字に変換して出力するメソッド
         /// </summary>

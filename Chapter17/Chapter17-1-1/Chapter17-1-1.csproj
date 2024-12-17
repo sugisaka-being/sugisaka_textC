@@ -46,7 +46,7 @@
     <Compile Include="Program17-1-1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextProcessor.cs" />
-    <Compile Include="ToHankakuNumberProcesser.cs" />
+    <Compile Include="ToHankakuNumberProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

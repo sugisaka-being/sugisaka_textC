@@ -13,7 +13,7 @@
         /// <summary>
         /// メートルとの比率
         /// </summary>
-        protected abstract double FRatio { get; }
+        protected abstract double Ratio { get; }
 
         /// <summary>
         /// 距離の単位
@@ -25,17 +25,13 @@
         /// </summary>
         /// <param name="vMeter">メートルの値</param>
         /// <returns>メートルから変換された値</returns>
-        public double FromMeter(double vMeter) {
-            return vMeter / this.FRatio;
-        }
+        public double FromMeter(double vMeter) => vMeter / this.Ratio;
 
         /// <summary>
         /// メートルへ変換するメソッド
         /// </summary>
         /// <param name="vFeet">変換対象の値</param>
         /// <returns>変換されたメートルの値</returns>
-        public double ToMeter(double vFeet) {
-            return vFeet * this.FRatio;
-        }
+        public double ToMeter(double vFeet) => vFeet * this.Ratio;
     }
 }
