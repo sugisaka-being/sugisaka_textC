@@ -45,9 +45,9 @@
   <ItemGroup>
     <Compile Include="ConverterBase.cs" />
     <Compile Include="ConverterFactory.cs" />
-    <Compile Include="DistanceConverter.cs" />
-    <Compile Include="KiloMeterConverter.cs" />
-    <Compile Include="MileConverter.cs" />
+    <Compile Include="Converters\DistanceConverter.cs" />
+    <Compile Include="Converters\KiloMeterConverter.cs" />
+    <Compile Include="Converters\MileConverter.cs" />
     <Compile Include="Program17-1-2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

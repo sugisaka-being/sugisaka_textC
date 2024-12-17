@@ -18,8 +18,8 @@ namespace Chapter17_1_3 {
         /// </summary>
         /// <param name="vTextLine">処理する文字列</param>
         public void Execute(string vTextLine) {
-            vTextLine = new string(vTextLine.Select(x => '０' <= x && x <= '９' ? (char)(x - '０' + '0') : x).ToArray());
-            Console.WriteLine(vTextLine);
+            var wConvertedTextLine = new string(vTextLine.Select(x => '０' <= x && x <= '９' ? (char)(x - '０' + '0') : x).ToArray());
+            Console.WriteLine(wConvertedTextLine);
         }
 
         /// <summary>

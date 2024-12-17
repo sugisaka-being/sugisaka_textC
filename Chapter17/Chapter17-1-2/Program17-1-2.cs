@@ -7,8 +7,8 @@ namespace Chapter17_1_2 {
         */
         static void Main(string[] args) {
             while (true) {
-                ConverterBase wFromConvert = GetConverter("変換元の単位を入力してください");
-                ConverterBase wToConvert = GetConverter("変換先の単位を入力してください");
+                ConverterBase wFromConvert = GetConverter("変換元の単位を入力してください　例）キロメートル");
+                ConverterBase wToConvert = GetConverter("変換先の単位を入力してください　例）マイル");
                 double wDistance = GetDistance(wFromConvert);
                 double wConvertResult = new DistanceConverter(wFromConvert, wToConvert).Convert(wDistance);
                 Console.WriteLine($"{wDistance}{wFromConvert.UnitName}は、{wConvertResult:0.000}{wToConvert.UnitName}です{Environment.NewLine}");
@@ -23,8 +23,9 @@ namespace Chapter17_1_2 {
         static double GetDistance(ConverterBase vFromConvert) {
             double? wDistanceValue = null;
             do {
-                Console.Write($"変換したい距離(単位:{vFromConvert.UnitName})を入力してください => ");
+                Console.Write($"変換したい距離(単位:{vFromConvert.UnitName})を入力してください　例)100 => ");
                 wDistanceValue = double.TryParse(Console.ReadLine(), out double wValue) ? (double?)wValue : null;
+                if (wDistanceValue == null) Console.WriteLine($"入力された距離は無効です。例を参考に再度入力し直してください");
             } while (wDistanceValue == null);
             return wDistanceValue.Value;
         }
@@ -39,6 +40,7 @@ namespace Chapter17_1_2 {
             do {
                 Console.Write(vOutputMessage + " => ");
                 wConverter = ConverterFactory.GetInstance(Console.ReadLine());
+                if (wConverter == null) Console.WriteLine($"入力された単位は無効です。例を参考に再度入力し直してください");
             } while (wConverter == null);
             return wConverter;
         }
