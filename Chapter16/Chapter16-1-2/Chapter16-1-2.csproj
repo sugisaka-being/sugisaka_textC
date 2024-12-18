@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsFileSearcher.cs" />
     <Compile Include="SequentialFileProcessor.cs" />
     <Compile Include="Program16-1-2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
